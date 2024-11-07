@@ -453,9 +453,15 @@ footer address {
 
 #gallery-modal .modal_content .fullgallery-item img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  #gallery-modal .modal_content .fullgallery-item img {
+      height: 100%; /* Altura automática en mobile */
+  }
 }
 
 #gallery-modal .modal_content .button-container {
