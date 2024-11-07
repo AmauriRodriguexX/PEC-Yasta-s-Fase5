@@ -170,7 +170,7 @@ footer > div .info {
 }
 
 footer > div .info > img {
-  object-fit: cover;
+  object-fit: scale-down;
   width: 150px;
 }
 

@@ -364,7 +364,7 @@ main div {
 }
 
 #winners .group .competitor-group .competitor .competitor-img {
-  margin-bottom: 0.62rem;
+  margin-bottom: -14px;
 }
 
 #winners .group .competitor-group .competitor .competitor-img img {
