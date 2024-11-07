@@ -424,24 +424,18 @@ footer address {
   #gallery-modal .modal_content .gallery {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 columnas en mobile */
-    gap: 10px; /* Espacio entre elementos, ajusta según prefieras */
   }
 }
 
 #gallery-modal .modal_content .fullgallery-item {
   overflow: hidden;
   position: relative;
-  height: 9.9375rem;
+  height: auto;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
-#gallery-modal .modal_content .fullgallery-item:nth-child(2),
-#gallery-modal .modal_content .fullgallery-item:nth-child(3),
-#gallery-modal .modal_content .fullgallery-item:nth-child(6),
-#gallery-modal .modal_content .fullgallery-item:nth-child(7) {
-  width: 10.9375rem;
-}
+
 
 #gallery-modal .modal_content .fullgallery-item {
   margin-right: 1.25rem;
@@ -459,7 +453,7 @@ footer address {
 
 #gallery-modal .modal_content .fullgallery-item img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   cursor: pointer;
 }
