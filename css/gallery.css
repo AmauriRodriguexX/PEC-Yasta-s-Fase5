@@ -171,6 +171,7 @@ footer > div .info {
 
 footer > div .info > img {
   object-fit: cover;
+  width: 150px;
 }
 
 footer > div .info > img.logo {
