@@ -2035,7 +2035,7 @@ footer address {
   }
 
   .containercount {
-    padding-inline: 0px;
+    padding-inline: 0px !important;
     margin-inline: inherit;
     max-width: 1200px;
 }
