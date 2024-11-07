@@ -1,27 +1,18 @@
 window.dataLayer = window.dataLayer || [];
 
 // MARK: EVENTS
-/**
- * Event that occurs when the user clicks on "know my story".
- * @param {string} videoUrl YouTube video url
- * @param {string} imageUrl Image url
- * @returns {void}
- */
-function onKnowTheStory(videoUrl, imageUrl) {
+function onKnowTheStory(label, videoUrl ) {
   window.dataLayer.push({
     event: "click_element",
     CDAction: "conoce_mi_historia",
-    CDLabel: "ganadora",
+    CDLabel: label,
     CDValue: videoUrl,
-    detail: imageUrl,
+    detail: "",
     CDFunnel: "PE Etapa Final 2024",
   });
 }
 
-/**
- *
- * @param {string} watchedImageUrl The image url that is watching the user
- */
+
 function onGallery(watchedImageUrl) {
   window.dataLayer.push({
     event: "galeria_PEC",
@@ -32,10 +23,6 @@ function onGallery(watchedImageUrl) {
   });
 }
 
-/**
- * Event that occurs when the user clicks on share in the home page.
- * @param {'facebook' | 'whatsapp'} socialNetwork Social network in which the user shared
- */
 function onHomeShare(socialNetwork) {
   window.dataLayer.push({
     event: "click_element",
@@ -45,12 +32,6 @@ function onHomeShare(socialNetwork) {
   });
 }
 
-/**
- * Event that occurs when the user clicks the play button for the first time.
- * @param {VideoCategory} videoCategory Video section opened
- * @param {string} videoUrl YouTube video URL
- * @returns {void}
- */
 function onVideoStart(videoCategory, videoUrl) {
   window.dataLayer.push({
     event: "pec_2024_videos",
@@ -62,13 +43,6 @@ function onVideoStart(videoCategory, videoUrl) {
   });
 }
 
-/**
- * Event that occurs when the user pauses the video or reaches a threshold.
- * @param {VideoCategory} videoCategory
- * @param {string} timeWatched percentage of the video the user watched
- * @param {string} videoSource video url
- * @returns {void}
- */
 function onVideoPause(videoCategory, timeWatched, videoSource) {
   window.dataLayer.push({
     event: "pec_2024_videos",
@@ -80,12 +54,7 @@ function onVideoPause(videoCategory, timeWatched, videoSource) {
   });
 }
 
-/**
- * Event that occurs when the user completes viewing the video.
- * @param {participantName} participantName participants name
- * @param {string} videoSource video url
- * @returns {void}
- */
+
 function onVideoCompletion(videoCategory, videoSource) {
   window.dataLayer.push({
     event: "pec_2024_videos",

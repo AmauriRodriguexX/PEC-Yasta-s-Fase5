@@ -3,10 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="" />
-    <title></title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link rel="stylesheet" href="css/gallery-styles.css?v=1.0.0" />
+    <meta
+      name="description"
+      content="Descubre a nuestros aposionados ganadores del Premio Emprendedores 2024. ¡Déjate motivar para alcanzar tus propias metas y únete a la celebración de su éxito!"
+    />
+    <title>¡Tenemos ganadores!. Premio Emprendedores Compartamos 2024</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="css/gallery.css?v=1.0.0" />
+    <script src="https://www.youtube.com/iframe_api"></script>
     <!-- Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {
@@ -18,7 +22,7 @@
         j.async = true;
         j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
         f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-WF4TNBM");
+      })(window, document, "script", "dataLayer", "GTM-PXVLSK6");
     </script>
     <!-- End Google Tag Manager -->
   </head>
@@ -27,144 +31,145 @@
     <!-- Google Tag Manager (noscript) -->
     <noscript
       ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-WF4TNBM"
+        src="https://www.googletagmanager.com/ns.html?id=GTM-PXVLSK6"
         height="0"
         width="0"
         style="display: none; visibility: hidden"
       ></iframe
     ></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <nav>
-      <div class="navbar-brand">
-        <a href="index.html" target="_self">
-          <img src="./assets/images/logo_yastas.png" alt="Logo Yastas" />
-        </a>
-      </div>
-      <div class="navbar-toggle" id="navbar-toggle">
-        <img src="./assets/images/icon-sidebar.png" alt="" />
-      </div>
-      <div class="navbar-menu" id="navbar-menu">
-        <div class="navbar-menu-header">
-          <img class="logo" src="./assets/images/logo_yastas.png" alt="" />
-          <img
-            class="button"
-            id="close-btn"
-            src="./assets/images/close_sidebar.png"
-            alt="Cerrar"
-          />
+    <header>
+      <img
+        src="./assets/images/logo_yastas.png"
+        height="40"
+        width="100"
+        alt="Logo CB"
+        style="cursor: pointer"
+        onclick="(function() { window.open('https://www.compartamos.com.mx/compartamos', '_blank'); })()"
+      />
+    </header>
+    <div id="gallery-modal">
+      <div class="modal_content">
+        <div onclick="goToHome()" class="closable_container">
+          <span class="back">
+            &#10094;&nbsp;<span class="text">Regresar</span>
+          </span>
+          
+          
         </div>
-        <ul class="font-inter">
-          <li><a href="ganadores.html">Ganadores</a></li>
-          <li><a href="acerca-de.html">Acerca de</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="container">
-      <div class="return_button">
-        <img
-          src="./assets/images/arrow_back.png"
-          alt="Icono regresar"
-          onclick="navigateTo('index.html')"
-        />
-        <span
-          class="font-inter hide_on_mobile"
-          onclick="navigateTo('index.html')"
-          >Regresar</span
-        >
-      </div>
-      <h1 class="font-amorsans">Galería de fotos</h1>
-      <div id="gallery-container" class="gallery_container"></div>
-    </div>
-
-    <!-- Fullscreen Gallery Modal -->
-    <div id="gallery-modal" class="gallery_modal">
-      <div class="close_modal-container">
-        <div class="gallery_counter">
-          <span class="font-inter" id="counter-number"></span>
-        </div>
-        <div class="close_modal-circle" onclick="closeGalleryModal()">
-          <span class="close_modal-icon">&times;</span>
-        </div>
-      </div>
-
-      <div class="gallery_content">
-        <div class="nav_button prev" onclick="prevImage()">
-          <img
-            src="./assets/images/flecha_izquierda.png"
-            alt="Flecha siguiente"
-          />
-        </div>
-        <img id="gallery-image" alt="Imagen de galeria" />
-        <div class="nav_button next" onclick="nextImage()">
-          <img
-            src="./assets/images/flecha_derecha.png"
-            alt="Flecha siguiente"
-          />
-        </div>
-      </div>
-
-      <div id="gallery-share" class="gallery_share">
-        <div class="download_container" onclick="download()">
-          <img src="./assets/images/download-solid.png" alt="Icono descargar" />
-          <span class="font-inter">Descargar</span>
-        </div>
-        <div class="intersection"></div>
-        <div class="share_wrapper">
-          <div class="share_container" onclick="share()">
-            <img src="./assets/images/share-solid.png" alt="Icono compartir" />
-            <span class="font-inter">Compartir</span>
+        <div class="subtitle-container"><p class="subtitle">Galería de fotos</p></div>
+          <div class="gallery">
+            <div class="fullgallery-item">
+                <img src="./assets/images/gallery-1.png" alt="Imagen 1" data-index="0">
+            </div>
+            <div class="fullgallery-item">
+                <img src="./assets/images/gallery-4.png" alt="Imagen 2" data-index="1">
+            </div>
+            <div class="fullgallery-item">
+                <img src="./assets/images/gallery-3.png" alt="Imagen 3" data-index="2">
+            </div>
+            <div class="fullgallery-item">
+              <img src="./assets/images/gallery-4.png" alt="Imagen 3" data-index="3">
+            </div>
+            <div class="fullgallery-item">
+              <img src="./assets/images/gallery-2.png" alt="Imagen 3" data-index="4">
+            </div>
+            <div class="fullgallery-item">
+              <img src="./assets/images/gallery_3.png" alt="Imagen 3" data-index="4">
+            </div>
+            <div class="fullgallery-item">
+              <img src="./assets/images/gallery-2.png" alt="Imagen 3" data-index="4">
+            </div>
+            <div class="fullgallery-item">
+                <img src="./assets/images/gallery-1.png" alt="Imagen 1" data-index="0">
+            </div>
           </div>
-
-          <!-- Dropdown for unsupported browsers -->
-          <div id="share-dropdown" class="font-inter share_dropdown">
-            <a href="#" onclick="shareInFacebook()">Compartir en Facebook</a>
-            <a href="#" onclick="shareInWhatsapp()">Compartir en Whatsapp</a>
+      </div>
+    </div>
+    <div id="gallery-view-modal">
+      <div class="modal_content">
+        <div class="closable_container">
+          <div class="imageIndex">
+            <span id="imageIndex"></span>
+          </div>
+          <img
+            src="./assets/images/icon_close_white.png"
+            alt="Icono de cerrar"
+            onclick="closeModalGallery()"
+          />
+        </div>
+        <div id="left-arrow" class="nav-arrow left-arrow" onclick="prevImage()">&#8592;</div>
+        <img id="gallery-image" src="" alt="">
+        <div id="right-arrow" class="nav-arrow right-arrow" onclick="nextImage()">&#8594;</div>
+        <div id="gallery-share" class="gallery_share">
+          <div class="download_container" onclick="download()">
+            <img src="./assets/images/download-icon.png" alt="Icono descargar" />
+            <span class="font-inter">Descargar</span>
+          </div>
+          <div class="intersection"></div>
+          <div class="share_wrapper">
+            <div class="share_container" onclick="share()">
+              <img src="./assets/images/share-icon.png" alt="Icono compartir" />
+              <span class="font-inter">Compartir</span>
+            </div>
+  
+            <!-- Dropdown for unsupported browsers -->
+            <div id="share-dropdown" class="font-inter share_dropdown">
+              <a href="#" onclick="shareInFacebook()">Compartir en Facebook</a>
+              <a href="#" onclick="shareInWhatsapp()">Compartir en Whatsapp</a>
+            </div>
           </div>
         </div>
       </div>
+      
     </div>
-
+    <div class="hr-container">
+      <hr>
+    </div>
     <footer>
-      <div class="yastas_info">
-        <div>
-          <a
-            href="https://www.yastas.com/wps/themes/html/YastasOrg/media/Yastas/index.html"
-            target="_self"
-          >
-            <img
-              src="./assets/images/logo_yastas.png"
-              alt="Logo Yastás"
-              width="169"
-              height="66"
-            />
-          </a>
-        </div>
-        <div>
-          <span class="font-inter"
-            >Una empresa de
-            <img
-              src="./assets/images/logo_gentera.png"
-              alt="Logo Gentera"
-              width="93"
-              height="auto"
-          /></span>
-          <span class="copyright font-inter">© 2024 Yastás, S.A. de C.V.</span>
-        </div>
-        <div
-          class="facebook"
-          onclick="navigateTo('https://www.facebook.com/yastasmx', '_blank')"
-        >
+      
+      <div>
+        <div class="info">
           <img
-            src="./assets/images/fb.png"
-            alt="Facebook"
-            width="16"
-            height="16"
-          />
+        src="./assets/images/logo_yastas.png"
+        height="40"
+        width="100"
+        alt="Logo CB"
+        style="cursor: pointer"
+        onclick="(function() { window.open('https://www.compartamos.com.mx/compartamos', '_blank'); })()"
+
+      />.
+          <div class="font-inter">
+            <span>
+              Una empresa de
+              <img
+                src="./assets/images/logo_gentera.png"
+                alt="Logo Gentera"
+                width="92"
+                height="22"
+              />
+            </span>
+            <span class="copyright"
+              >© 2024 Banco Compartamos, SA, Institución de Banca
+              Múltiple.</span
+            >
+          </div>
+        </div>
+        <div>
+          <div class="socials">
+            <a href="https://www.facebook.com/CompartamosBanco" target="_blank">
+              <img
+                src="./assets/images/fb.png"
+                alt="Facebook"
+                width="24"
+                height="24"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
-    <script src="js/gallery.js?v=1.1.0"></script>
+    <script src="js/gallery.js?v=1.0.0"></script>
     <script src="js/gallery-events.js?v=1.0.0"></script>
   </body>
 </html>

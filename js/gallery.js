@@ -1,27 +1,118 @@
-// MARK: CONSTANTS
-// Variables
+const goToWinners = () => {
+  window.location.href = 'ganadores.html';
+}
+
+const goToHome = () => {
+  window.location.href = 'index.html';
+}
+
+const goToAbout = () => {
+  window.location.href = 'acerca-de.html';
+}
+
+
+document.getElementById('hamburger-icon').addEventListener('click', function() {
+  this.classList.toggle('active');
+  document.getElementById('mobile-nav').classList.toggle('active');
+});
+
+let currentIndex = 0;
+const $galleryItems = document.querySelectorAll('.fullgallery-item img');
+const $modalViewGallery = document.getElementById("gallery-view-modal");
+const $fullGallery = document.getElementById("gallery-modal");
+const $modalImg = document.getElementById('gallery-image');
+const $leftArrow = document.getElementById('left-arrow');
+const $rightArrow = document.getElementById('right-arrow');
+let totalImages = $galleryItems.length;
+
+document.querySelectorAll('.fullgallery-item img').forEach((img, index) => {
+  img.addEventListener('click', function() {
+    openModalGallery(this.src,index);
+  });
+});
+
+const openModalGallery = (imageSrc, index) => {
+  currentIndex = index;
+  const $galleryImage = document.getElementById("gallery-image");
+  updateImageIndex();
+  $galleryImage.src= imageSrc;
+  $modalViewGallery.style.display = "block";
+  updateGalleryArrow(index);
+};
+
+const closeModalGallery = () => {
+  if ($modalViewGallery) {
+    $modalViewGallery.style.display = "none";
+  }
+};
+
+const openFullGallery = () => {
+  $fullGallery.style.display = "block";
+  document.querySelectorAll('.fullgallery-item img').forEach((img, index) => {
+    img.addEventListener('click', function() {
+      openModalGallery(this.src,index);
+    });
+  });
+};
+
+const closeFullGallery = () => {
+  if ($fullGallery) {
+    $fullGallery.style.display = "none";
+  }
+};
+
+function updateImageIndex() {
+  const $imageIndex = document.getElementById('imageIndex');
+  $imageIndex.textContent = `${currentIndex + 1} / ${totalImages}`;
+  updateGalleryArrow(currentIndex)
+}
+
+const prevImage = () => {
+  currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalImages - 1;
+  $modalImg.src = $galleryItems[currentIndex].src;
+  updateImageIndex();
+}
+
+const nextImage = () => {
+  currentIndex = (currentIndex < totalImages - 1) ? currentIndex + 1 : 0;
+  $modalImg.src = $galleryItems[currentIndex].src;
+  updateImageIndex();
+}
+
+const updateGalleryArrow = (index) => {
+  if(index == 0) {
+    $leftArrow.classList.remove('active');
+    $leftArrow.classList.add('inactive');
+  }
+  else {
+    $leftArrow.classList.remove('inactive');
+    $leftArrow.classList.add('active');
+  }
+  if(index == totalImages-1) {
+    $rightArrow.classList.remove('active');
+    $rightArrow.classList.add('inactive');
+  }
+  else {
+    $rightArrow.classList.remove('inactive');
+    $rightArrow.classList.add('active');
+  }
+}
+
+function getFullImageUrl(localPath) {
+  return `${window.location.origin}/${localPath.replace("./", "")}`;
+}
+
+
 const GALLERY_IMAGES = [
-  "./assets/images/gallery_1.png",
-  "./assets/images/gallery_2.png",
-  "./assets/images/gallery_3.png",
-  "./assets/images/gallery_4.png",
-  "./assets/images/gallery_5.png",
+  "./assets/images/gallery-1.png",
+  "./assets/images/gallery-2.png",
+  "./assets/images/gallery-3.png",
+  "./assets/images/gallery-4.png",
+  "./assets/images/gallery-5.png",
+  "./assets/images/gallery-6.png",
+  "./assets/images/gallery-7.png",
 ];
 
-// HTMLElements
-// Navbar
-/** @type {HTMLDivElement | null} */
-const $TOGGLE_BUTTON = document.getElementById("navbar-toggle");
-/** @type {HTMLDivElement | null} */
-const $MENU = document.getElementById("navbar-menu");
-/** @type {HTMLImageElement | null} */
-const $CLOSE_BUTTON = document.getElementById("close-btn");
-
-// Gallery . Grid
-/** @type {HTMLDivElement | null} */
-const $GALLERY_GRID = document.getElementById("gallery-container");
-
-// Gallery fullscreen
 /** @type {HTMLDivElement | null} */
 const $GALLERY_MODAL = document.getElementById("gallery-modal");
 /** @type {HTMLImageElement | null} */
@@ -38,131 +129,15 @@ const $GALLERY_COUNTER = document.getElementById("counter-number");
 const $GALLERY_SHARE = document.getElementById("gallery-share");
 /** @type {HTMLDivElement | null} */
 const $SHARE_DROPDOWN = document.getElementById("share-dropdown");
-// MARK: UTILS
-/**
- * Navigates to a given URL.
- * @param {string} url The URL to navigate to.
- * @param {'_self' | '_blank' | '_parent' | '_top' | '_unfencedTop'} [target] Where to display the linked URL
- */
-function navigateTo(url, target = "_self") {
-  window.open(url, target);
-}
 
-/**
- * Clears the content of the provided HTML element.
- * @param {HTMLElement} element - The element to clear.
- */
-function clearContainer(element) {
-  element.innerHTML = "";
-}
 
-function getFullImageUrl(localPath) {
-  return `${window.location.origin}/${localPath.replace("./", "")}`;
-}
-
-// MARK: GALLERY - GRID
-/**
- * Creates an image element with the provided source.
- * @param {string} src The source URL of the image.
- * @returns {HTMLImageElement} The created image element.
- */
-function createImageElement(src) {
-  const $imageElement = document.createElement("img");
-  $imageElement.classList.add("gallery_image");
-  $imageElement.src = src;
-  return $imageElement;
-}
-
-/**
- * Creates a gallery item element containing an image.
- * @param {string} imageSrc The source URL of the image.
- * @param {number} index The image selected.
- * @returns {HTMLDivElement} The created gallery item element.
- */
-function createGalleryItem(imageSrc, index) {
-  const galleryDiv = document.createElement("div");
-  galleryDiv.classList.add("gallery_item");
-  galleryDiv.onclick = () => openGalleryModal(index);
-
-  const imageElement = createImageElement(imageSrc);
-  galleryDiv.appendChild(imageElement);
-
-  return galleryDiv;
-}
-
-/**
- * Renders a grid of images in the provided container element.
- * @param {HTMLDivElement} container - The container element for the gallery.
- * @param {string[]} images - Array of image URLs to render.
- */
-function renderGallery(container, images) {
-  clearContainer(container);
-  images.forEach((imageSrc, index) => {
-    const galleryItem = createGalleryItem(imageSrc, index);
-    container.appendChild(galleryItem);
-  });
-}
-
-// MARK: GALLERY - FULLSCREEN
-let currentImageIndex = 0;
-
-function openGalleryModal(index) {
-  currentImageIndex = index;
-  if ($GALLERY_MODAL) {
-    document.body.classList.toggle("no-scroll");
-    $GALLERY_MODAL.style.display = "flex";
-    showImage($GALLERY_IMAGE, GALLERY_IMAGES, index);
-    updateGalleryCounter(index + 1);
-    onGallery(GALLERY_IMAGES[index]);
-  }
-}
-
-function closeGalleryModal() {
-  if ($GALLERY_MODAL) {
-    document.body.classList.remove("no-scroll");
-    $GALLERY_MODAL.style.display = "none";
-  }
-}
-
-function updateGalleryCounter(number) {
-  if ($GALLERY_COUNTER) {
-    $GALLERY_COUNTER.innerText = `${number}/${GALLERY_IMAGES.length}`;
-  }
-}
-
-function nextImage() {
-  currentImageIndex = (currentImageIndex + 1) % GALLERY_IMAGES.length;
-  onGallery(GALLERY_IMAGES[currentImageIndex]);
-  showImage($GALLERY_IMAGE, GALLERY_IMAGES, currentImageIndex);
-  updateGalleryCounter(currentImageIndex + 1);
-}
-
-function prevImage() {
-  currentImageIndex =
-    currentImageIndex === 0 ? GALLERY_IMAGES.length - 1 : currentImageIndex - 1;
-  onGallery(GALLERY_IMAGES[currentImageIndex]);
-  showImage($GALLERY_IMAGE, GALLERY_IMAGES, currentImageIndex);
-  updateGalleryCounter(currentImageIndex + 1);
-}
-
-/**
- * Changes the current image on the fullscreen gallery
- * @param {HTMLImageElement} container
- * @param {string[]} images
- * @param {number} imageIndex
- */
-function showImage(container, images, imageIndex) {
-  container.src = images[imageIndex];
-}
-
-// MARK: Web Share API
 /**
  * Downloads the currently selected image from the gallery.
  * @returns {void}
  * @throws {Error} If the currentImageUrl is not valid or if the download fails.
  */
 function download() {
-  const currentImageUrl = getCurrentImageUrl(currentImageIndex);
+  const currentImageUrl = getCurrentImageUrl(currentIndex);
   if (!currentImageUrl) {
     throw new Error("URL de imagen no válida.");
   }
@@ -213,7 +188,7 @@ function getCurrentImageUrl(index) {
  */
 async function share() {
   try {
-    const currentImageUrl = getCurrentImageUrl(currentImageIndex);
+    const currentImageUrl = getCurrentImageUrl(currentIndex);
     const blob = await fetchImageBlob(currentImageUrl);
     const file = createFileFromBlob(blob, currentImageUrl);
 
@@ -383,17 +358,17 @@ function bindOutsideClick(shareDropdown, galleryShare) {
 
 /**
  * Shares an image link on Facebook.
- * @param {number} [imageIndex=currentImageIndex] - The index of the image to share. Defaults to currentImageIndex.
+ * @param {number} [imageIndex=currentIndex] - The index of the image to share. Defaults to currentImageIndex.
  */
-function shareInFacebook(imageIndex = currentImageIndex) {
+function shareInFacebook(imageIndex = currentIndex) {
   shareOnPlatform(imageIndex, "https://www.facebook.com/sharer/sharer.php?u=");
 }
 
 /**
  * Shares an image link on WhatsApp.
- * @param {number} [imageIndex=currentImageIndex] - The index of the image to share. Defaults to currentImageIndex.
+ * @param {number} [imageIndex=currentIndex] - The index of the image to share. Defaults to currentImageIndex.
  */
-function shareInWhatsapp(imageIndex = currentImageIndex) {
+function shareInWhatsapp(imageIndex = currentIndex) {
   shareOnPlatform(imageIndex, "https://wa.me/?text=");
 }
 
@@ -413,11 +388,6 @@ function shareOnPlatform(imageIndex, baseUrl) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Gallery grid
-  if ($GALLERY_GRID) {
-    renderGallery($GALLERY_GRID, GALLERY_IMAGES);
-  }
-
   if ($SHARE_DROPDOWN && $GALLERY_SHARE) {
     bindOutsideClick($SHARE_DROPDOWN, $GALLERY_SHARE);
   }

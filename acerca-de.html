@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Encuentra información detallada sobre el  Premio Emprendedores 2024, como lo es:  fechas importantes, los requisitos y los pasos a seguir para participar."
+      content="Explora las fecha, requisitos y pasos para participar en el Premio Emprendedores 2024. Reconoceremos historias que nos inspiran a seguir impulsando sueños."
     />
-    <title>Conoce las bases del Premio Emprendedores Yastás 2024</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link rel="stylesheet" href="css/about-styles.css?v=2.0.0" />
-    <link
-      rel="canonical"
-      href="https://www.compartamos.com.mx/Emprendedores/"
-    />
+    <title>Conoce más sobre el  Premio Emprendedores Compartamos 2024</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="css/about-styles.css?v=1.0.0" />
     <!-- Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {
@@ -25,16 +21,18 @@
         j.async = true;
         j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
         f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-WF4TNBM");
+      })(window, document, "script", "dataLayer", "GTM-PXVLSK6");
     </script>
     <!-- End Google Tag Manager -->
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/Utms.js"></script>
   </head>
 
   <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript
       ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-WF4TNBM"
+        src="https://www.googletagmanager.com/ns.html?id=GTM-PXVLSK6"
         height="0"
         width="0"
         style="display: none; visibility: hidden"
@@ -42,44 +40,44 @@
     ></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <header>
-      <a href="index.html" target="_self">
-        <img
-          src="./assets/images/logo_yastas.png"
-          height="48"
-          width="123"
-          alt="Logo Yastás"
-          style="cursor: pointer"
-          onclick="navigateToUrl('index.html')"
-        />
+      <img
+        onclick="goBackHome()"
+        src="./assets/images/logo_CB.png"
+        height="40"
+        width="100"
+        alt="Logo CB"
+        style="cursor: pointer"
+      />
+      <a
+        class="font-inter"
+        onclick="goToWinners()"
+        style="cursor: pointer"
+      >
+        Ganadores
       </a>
-      <a class="font-inter" href="ganadores.html">Ganadores</a>
     </header>
     <main>
       <img
         class="image_mobile"
-        src="./assets/images/premio_emprendedores_2024_convocatoria_mobile.jpg"
+        src="./assets/images/mobile/premio_emprendedores_2024_convocatoria_mobile.jpg"
         alt="Master premio emprendedores"
       />
       <img
         class="image_desktop"
-        src="./assets/images/premio_emprendedores_2024_convocatoria_desktop.jpg"
+        src="./assets/images/premio_emprendedores_2024_convocatoria.jpg"
         alt="Master premio emprendedores"
+        style="padding-top: 72px"
       />
     </main>
 
     <section id="start">
       <div>
-        <h1 class="font-amorsans">Premio Emprendedores 2024</h1>
+        <h1 class="font-bree">Premio Emprendedores 2024</h1>
         <p class="font-inter">
-          Premio Emprendedores <span class="font-yastas">Yastás</span> es un
-          concurso en donde celebramos las historias de nuestros mejores
-          Comisionistas.
-        </p>
-        <p class="font-inter">
+          Premio Emprendedores es un concurso de Compartamos Banco en donde
+          celebramos las historias de nuestros mejores clientes. <br /><br />
           Emprendedores que cumplen lo que se proponen, logran cumplir todos sus
-          objetivos en lo económico, social y humano.
-        </p>
-        <p class="font-inter">
+          objetivos en lo económico, social y humano. <br /><br />
           En la edición 2024, premiaremos y reconoceremos historias que nos
           inspiran a seguir Impulsando Sueños.
         </p>
@@ -92,31 +90,26 @@
 
     <section id="how-to-enter">
       <div>
-        <h2 class="font-amorsans">¿Estás listo para participar?</h2>
-        <span class="font-inter hide-mobile"
+        <h2 id="title" class="font-bree">Requisitos para participar</h2>
+        <span id="subtitle" class="font-inter"
           >Para participar debes cumplir los siguientes requisitos:</span
         >
         <ul>
-          <li class="font-inter">Hombres y mujeres Comisionistas.</li>
           <li class="font-inter">
-            Contar con 1 año de antigüedad como Comisionista afiliado a la Red
-            <span class="font-yastas">Yastás</span>.
+            Tener un Crédito Grupal Compartamos o Crédito Individual activo.
           </li>
-          <li class="font-inter">
-            Haber realizado por lo menos una operación financiera mensual desde
-            octubre 2023 hasta abril 2024.
-          </li>
-          <li class="font-inter">
-            Que el comercio pertenezca a las categorías de Superagentes y
-            Diamante.
-          </li>
+          <li class="font-inter">Contar al menos con 4 años de antigüedad.</li>
+          <li class="font-inter">Sin atrasos en tus pagos.</li>
         </ul>
       </div>
       <img src="./assets/images/requisitos.jpg" alt="Requisitos" />
     </section>
 
     <section id="steps-to-enter">
-      <h3 class="font-amorsans">Sigue estos pasos:</h3>
+      <h3 id="title" class="font-bree">Sigue los siguientes pasos:</h3>
+      <span id="subtitle" class="font-inter"
+        >Para participar debes cumplir los siguientes requisitos:</span
+      >
       <div class="steps">
         <div class="step_card">
           <div>
@@ -124,24 +117,23 @@
               <img src="./assets/images/p1.png" height="72" alt="Paso 1" />
             </div>
           </div>
-          <h4 class="font-amorsans">1</h4>
+          <h4 class="font-bree">1</h4>
           <p class="font-inter">
-            En un video de máximo 1 minuto 30 segundos, ¡cuéntanos todos los
-            sueños que has cumplido desde que eres Comisionista
-            <span class="font-yastas">Yastás</span>!, y cuál es el que te hace
-            sentir más orgulloso
+            Cuéntanos en un video de duración máxima de 1 minuto y 30 segundos,
+            de todos tus sueños cumplidos desde que eres cliente de Compartamos,
+            cual es el que más te enorgullece haber logrado.
           </p>
         </div>
         <div class="separator">
           <img
             class="down_arrow"
-            src="./assets/images/icon_arrow_down.png"
+            src="./assets/images/icon_arrow_up.png"
             alt="Flecha hacia abajo"
             height="37"
           />
           <img
             class="right_arrow"
-            src="./assets/images/icon_arrow_right.png"
+            src="./assets/images/icon_arrow.png"
             alt="Flecha hacia la derecha"
             height="37"
           />
@@ -152,7 +144,7 @@
               <img src="./assets/images/p2.png" height="72" alt="Paso 2" />
             </div>
           </div>
-          <h4 class="font-amorsans">2</h4>
+          <h4 class="font-bree">2</h4>
           <p class="font-inter">
             Tómate una foto de la cintura hacia arriba sin acompañante.
           </p>
@@ -160,13 +152,13 @@
         <div class="separator">
           <img
             class="down_arrow"
-            src="./assets/images/icon_arrow_down.png"
+            src="./assets/images/icon_arrow_up.png"
             alt="Flecha hacia abajo"
             height="37"
           />
           <img
             class="right_arrow"
-            src="./assets/images/icon_arrow_right.png"
+            src="./assets/images/icon_arrow.png"
             alt="Flecha hacia la derecha"
             height="37"
           />
@@ -177,15 +169,19 @@
               <img src="./assets/images/p3.png" height="72" alt="Paso 3" />
             </div>
           </div>
-          <h4 class="font-amorsans">3</h4>
-          <p class="font-inter">Ingresa al formulario y regístrate.</p>
+          <h4 class="font-bree">3</h4>
+          <p class="font-inter">
+            Ingresa al formulario y regístrate.
+          </p>
         </div>
       </div>
     </section>
 
     <section id="stages">
-      <h2 class="font-amorsans">¡Qué no se te pasen las fechas!</h2>
-      <span class="font-inter">Conoce las etapas del concurso.</span>
+      <h2 id="title" class="font-bree">¡Qué no se te pasen las fechas!</h2>
+      <span id="subtitle" class="font-inter"
+        >Conoce las etapas del concurso.</span
+      >
       <div class="timeline">
         <div class="timeline_event">
           <div class="timeline_marker first_event active_marker"></div>
@@ -194,10 +190,10 @@
               <img src="./assets/images/e1_active.png" alt="Icono detalles" />
             </div>
             <div class="specs">
-              <h3 class="font-amorsans active_stage">Etapa 1</h3>
+              <h3 class="font-bree active_stage">Etapa 1</h3>
               <div class="font-inter">
                 <h4>Convocatoria</h4>
-                <span>Del 20 de mayo al 5 de julio del 2024.</span>
+                <span>Del 20 de mayo al 5 de julio del 2024</span>
               </div>
             </div>
           </div>
@@ -209,9 +205,9 @@
               <img src="./assets/images/e2_active.png" alt="Icono detalles" />
             </div>
             <div class="specs">
-              <h3 class="font-amorsans active_stage">Etapa 2</h3>
+              <h3 class="font-bree active_stage">Etapa 2</h3>
               <div class="font-inter">
-                <h4>Selección de Finalistas</h4>
+                <h4>Selección Finalistas</h4>
                 <span>8 al 18 de julio del 2024</span>
               </div>
             </div>
@@ -224,7 +220,7 @@
               <img src="./assets/images/e3_active.png" alt="Icono detalles" />
             </div>
             <div class="specs">
-              <h3 class="font-amorsans active_stage">Etapa 3</h3>
+              <h3 class="font-bree active_stage">Etapa 3</h3>
               <div class="font-inter">
                 <h4>Votaciones</h4>
                 <span>Del 19 de julio al 05 de agosto del 2024</span>
@@ -239,7 +235,7 @@
               <img src="./assets/images/e4_active.png" alt="Icono detalles" />
             </div>
             <div class="specs">
-              <h3 class="font-amorsans active_stage">Etapa 4</h3>
+              <h3 class="font-bree active_stage">Etapa 4</h3>
               <div class="font-inter">
                 <h4>Anuncio Ganadores</h4>
                 <span>7 de agosto del 2024</span>
@@ -254,7 +250,7 @@
               <img src="./assets/images/e5_active.png" alt="Icono detalles" />
             </div>
             <div class="specs">
-              <h3 class="font-amorsans active_stage">Etapa 5</h3>
+              <h3 class="font-bree active_stage">Etapa 5</h3>
               <div class="font-inter">
                 <h4>Entrega de premios</h4>
                 <span>Del 8 de agosto al 5 de septiembre del 2024</span>
@@ -266,14 +262,70 @@
     </section>
 
     <section id="previous-winners">
-      <h2 id="title" class="font-amorsans">
-        Conoce a Paty la Comisionista ganadora del 2023
+      <h2 id="title" class="font-bree">
+        Conoce a los Emprendedores ganadores del 2023
       </h2>
-      <span id="subtitle" class="font-inter">¡Tú también puedes ganar!</span>
+      <span id="subtitle" class="font-inter">¡Tú puedes ser uno de ellos!</span>
+      <div class="carousel">
+        <div
+          class="card"
+          onclick="
+          onVideoClicked('Reyna Arroyo', 1);
+          openModal('assets/images/Reyna-Arroyo-Participacion-Familiar.mp4', 'Reyna Arroyo - Participante 2023')
+          "
+        >
+          <div class="thumbnail">
+            <div class="play_button-circle">
+              <div class="play_button"></div>
+            </div>
+          </div>
+          <div class="card_footer">
+            <span class="card_footer-name">Reyna Arroyo</span>
+            <span class="card_footer-description">Participación Familiar</span>
+          </div>
+        </div>
+        <div
+          class="card"
+          onclick="
+          onVideoClicked('Carolina Rojas', 2);
+          openModal('assets/images/Carolina-Rojas-Comercio-Digital.mp4', 'Carolina Rojas - Participante 2023')
+          "
+        >
+          <div class="thumbnail">
+            <div class="play_button-circle">
+              <div class="play_button"></div>
+            </div>
+          </div>
+          <div class="card_footer">
+            <span class="card_footer-name">Carolina Rojas</span>
+            <span class="card_footer-description">Comercio Digital</span>
+          </div>
+        </div>
+        <div
+          class="card"
+          onclick="
+          onVideoClicked('Idania Medina', 3);
+          openModal('assets/images/Idania-Medina-Servicio.mp4', 'Idania Medina - Participante 2023')
+          "
+        >
+          <div class="thumbnail">
+            <div class="play_button-circle">
+              <div class="play_button"></div>
+            </div>
+          </div>
+          <div class="card_footer">
+            <span class="card_footer-name">Idania Medina</span>
+            <span class="card_footer-description">Servicio</span>
+          </div>
+        </div>
+      </div>
       <div class="grid">
         <div
           class="card"
-          onclick="onVideoClicked('Patricia-Alvarez', 1); openModal('./assets/videos/patricia_alvarez.mp4','Patricia Álvarez Comisionista de 10')"
+          onclick="
+          onVideoClicked('Reyna Arroyo', 1);
+          openModal('./assets/images/Reyna-Arroyo-Participacion-Familiar.mp4', 'Reyna Arroyo - Participante 2023')
+          "
           style="cursor: pointer"
         >
           <div class="thumbnail">
@@ -282,8 +334,44 @@
             </div>
           </div>
           <div class="card_footer">
-            <span class="card_footer-name">Patricia Álvarez</span>
-            <span class="card_footer-description">Comisionista de 10</span>
+            <span class="card_footer-name">Reyna Arroyo</span>
+            <span class="card_footer-description">Participación Familiar</span>
+          </div>
+        </div>
+        <div
+          class="card"
+          onclick="
+          onVideoClicked('Carolina Rojas', 2);
+          openModal('./assets/images/Carolina-Rojas-Comercio-Digital.mp4', 'Carolina Rojas - Participante 2023')
+          "
+          style="cursor: pointer"
+        >
+          <div class="thumbnail">
+            <div class="play_button-circle">
+              <div class="play_button"></div>
+            </div>
+          </div>
+          <div class="card_footer">
+            <span class="card_footer-name">Carolina Rojas</span>
+            <span class="card_footer-description">Comercio Digital</span>
+          </div>
+        </div>
+        <div
+          class="card"
+          onclick="
+          onVideoClicked('Idania Medina', 3);
+          openModal('./assets/images/Idania-Medina-Servicio.mp4', 'Idania Medina - Participante 2023')
+          "
+          style="cursor: pointer"
+        >
+          <div class="thumbnail">
+            <div class="play_button-circle">
+              <div class="play_button"></div>
+            </div>
+          </div>
+          <div class="card_footer">
+            <span class="card_footer-name">Idania Medina</span>
+            <span class="card_footer-description">Servicio</span>
           </div>
         </div>
       </div>
@@ -308,17 +396,12 @@
     <footer>
       <div>
         <div class="info">
-          <a
-            href="https://www.yastas.com/wps/themes/html/YastasOrg/media/Yastas/index.html"
-            target="_self"
-          >
-            <img
-              src="./assets/images/logo_yastas.png"
-              alt="Logo Compartamos Banco"
-              width="150"
-              height="60"
-            />
-          </a>
+          <img
+            src="./assets/images/logo_CB.png"
+            alt="Logo Compartamos Banco"
+            width="150"
+            height="60"
+          />
           <div class="font-inter">
             <span>
               Una empresa de
@@ -330,17 +413,15 @@
               />
             </span>
             <span class="copyright"
-              >© 2024 <span class="font-yastas">Yastás</span> S.A. de C.V.</span
+              >© 2024 Banco Compartamos, SA, Institución de Banca
+              Múltiple.</span
             >
           </div>
         </div>
+
         <div class="">
           <div class="socials">
-            <a
-              href="https://www.facebook.com/yastasmx"
-              style="margin: auto"
-              target="_blank"
-            >
+            <a href="https://www.facebook.com/CompartamosBanco" target="_blank">
               <img
                 src="./assets/images/fb.png"
                 alt="Facebook"
@@ -348,19 +429,46 @@
                 height="24"
               />
             </a>
+            <a href="https://www.instagram.com/compartamosbancomx/" target="_blank">
+              <img
+                src="./assets/images/ig.png"
+                alt="Instagram"
+                width="24"
+                height="24"
+              />
+            </a>
+            <a href="https://www.youtube.com/user/compartamosbanco" target="_blank">
+              <img
+                src="./assets/images/yt.png"
+                alt="YouTube"
+                width="24"
+                height="24"
+              />
+            </a>
+            <a href="https://www.tiktok.com/@compartamosbancomx" target="_blank">
+              <img
+                src="./assets/images/tk.png"
+                alt="TikTok"
+                width="24"
+                height="24"
+              />
+            </a>
           </div>
-          <div class="font-inter" style="padding-bottom: 1rem">
+          <div class="font-inter">
             <a
-              href="https://www.compartamos.com.mx/compartamos/regulacion/terminos-y-condiciones"
-              target="_blank"
-            >
+              href="https://www.compartamos.com.mx/compartamos/regulacion/terminos-y-condiciones" target="_blank">
               Términos y condiciones
             </a>
           </div>
         </div>
+
       </div>
+      <address class="font-inter" style="margin-top: 2rem;">
+        Banco Compartamos, SA, Institución de Banca Múltiple, Av. Insurgentes
+        Sur 1458, Actipan, Benito Juárez, 03230 Ciudad de México, CDMX
+      </address>
     </footer>
-    <script src="js/about.js?v=2.0.0"></script>
-    <script src="js/about-events.js?v=2.0.0"></script>
+    <script src="js/about.js?v=1.0.0"></script>
+    <script src="js/about-events.js?v=1.0.0"></script>
   </body>
 </html>

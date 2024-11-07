@@ -26,6 +26,13 @@ body {
     margin: 0;
 }
 
+@media (max-width: 768px) { /* Ajusta el tamaño si quieres aplicarlo en otros dispositivos */
+    body {
+        margin-top: 110px;
+    }
+}
+
+
 /**
    * Render the `main` element consistently in IE.
    */

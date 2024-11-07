@@ -1,7 +1,7 @@
-# Minas Tirith
+# Minas Morgul
 
-## Premio Emprendedores Yastas
-Proyecto premio emprendedores para Yastas
+## Premio Emprendedores CB
+Proyecto premio emprendedores para el banco Compartamos Banco
 
 ## Características
 

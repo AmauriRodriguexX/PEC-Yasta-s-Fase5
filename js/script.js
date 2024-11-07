@@ -1,48 +1,554 @@
-// MARK: TYPES
+const $videoModal = document.getElementById("video-modal");
+const $videoSource = document.getElementById("player");
+
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var player;
+let videoPlayStatus = {};
+let percentageSended = {};
+let intervalId;
+let hasBeenPaused = false;
+
+function getYoutubeVideoId(url) {
+  const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/embed\/)([^"&?\/\s]{11})/;
+  const match = url.match(regex);
+  return (match && match[1]) ? match[1] : null;
+}
+
+function onPlayerReady(event) {
+    percentageSended = {};
+}
+
+function getNearestVideoPercentage(value) {
+  const allowedValues = [10, 25, 50, 75];
+  let nearest = allowedValues[0];
+  let minDifference = Math.abs(value - allowedValues[0]);
+
+  for (let i = 1; i < allowedValues.length; i++) {
+    let difference = Math.abs(value - allowedValues[i]);
+    if (difference < minDifference) {
+      minDifference = difference;
+      nearest = allowedValues[i];
+    }
+  }
+  
+  return nearest;
+}
+
+function checkVideoProgress() {
+  const currentTime = player.getCurrentTime();
+  const videoDuration = player.getDuration();
+  if (currentTime !== undefined && videoDuration !== 0) {
+    const percentageWatched = (currentTime / videoDuration) * 100;
+    const roundedPercentage = Math.round(percentageWatched);
+    switch (roundedPercentage) {
+      case 10:
+        if (!(10 in percentageSended)) {
+          percentageSended[10] = false;
+        }
+        if(!percentageSended[10]) {
+          percentageSended[10] = true;
+          sendVideoProgressEvent(10);
+        }
+        break;
+      case 25:
+        if (!(25 in percentageSended)) {
+          percentageSended[25] = false;
+        }
+        if(!percentageSended[25]) {
+          percentageSended[25] = true;
+          sendVideoProgressEvent(25);
+        }
+        break;
+      case 50:
+        if (!(50 in percentageSended)) {
+          percentageSended[50] = false;
+        }
+        if(!percentageSended[50]) {
+          percentageSended[50] = true;
+          sendVideoProgressEvent(50);
+        }
+        break;
+      case 75:
+        if (!(75 in percentageSended)) {
+          percentageSended[75] = false;
+        }
+        if(!percentageSended[75]) {
+          percentageSended[75] = true;
+          sendVideoProgressEvent(75);
+        }
+        break;
+    }
+  }
+}
+
+function onPlayerStateChange(event) {
+  const ytFrame = document.getElementById('player');
+  const videoId = getYoutubeVideoId(ytFrame.src);
+  const competitorIndex = ytFrame.getAttribute('competitor-index');
+  const group = ytFrame.getAttribute('group-name');
+  const competitor = currentGroupData[competitorIndex];
+  if (!(videoId in videoPlayStatus)) {
+    videoPlayStatus[videoId] = false;
+    onVideoStart(group, ytFrame.src)
+  }
+
+  if (event.data == YT.PlayerState.PLAYING ) {
+    hasBeenPaused = false;
+    clearInterval(intervalId);
+    intervalId = setInterval(checkVideoProgress, 50);
+    if(!videoPlayStatus[videoId]) {
+      videoPlayStatus[videoId] = true;
+    }
+  } else if (event.data == YT.PlayerState.PAUSED) {
+    hasBeenPaused = true;
+    clearInterval(intervalId);
+    const percentageWatched = (player.getCurrentTime() / player.getDuration()) * 100;
+    sendVideoProgressEvent(percentageWatched);
+  } else if (event.data == YT.PlayerState.ENDED) {
+    clearInterval(intervalId);
+    percentageSended = {}; 
+    videoPlayStatus[videoId] = false;
+    onVideoCompletion(group, ytFrame.src)
+  }
+}
+
+
+const openModal = (videoSrc, name, business, index, groupName) => {
+  if ($videoModal && $videoSource) {
+      $videoModal.style.display = "block";
+      $videoSource.setAttribute('competitor-index', index);
+      $videoSource.setAttribute('group-name', groupName);
+      onKnowTheStory(name, buildYoutubeEmbedLink(videoSrc));
+  }
+  if (player) {
+      player.destroy();
+  }
+  
+  player = new YT.Player('player', {
+      videoId: videoSrc, // Aquí usaremos el ID directamente
+      playerVars: {
+          'rel': 0,
+      },
+      events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+      }
+  });
+};
+
+
+const closeModal = () => {
+  if ($videoModal) {    
+    clearInterval(intervalId);
+    $videoModal.style.display = "none"; 
+    const percentageWatched = (player.getCurrentTime() / player.getDuration()) * 100;
+    if(percentageWatched < 90 && percentageWatched > 0 && !hasBeenPaused) {
+      sendVideoProgressEvent(percentageWatched);
+    }    
+    player.destroy();
+  }
+};
+
+const sendVideoProgressEvent = (percentageWatched) => {
+  const ytFrame = document.getElementById('player');
+  const competitorIndex = ytFrame.getAttribute('competitor-index');
+  const group = ytFrame.getAttribute('group-name');
+  onVideoPause(group,getNearestVideoPercentage(percentageWatched),ytFrame.src);
+}
+
+// Close the modal if the user clicks anywhere outside of it
+window.onclick = (event) => {
+  if (event.target === $videoModal) {
+    closeModal("click fuera");
+  }
+};
+
+const carousel = document.querySelector('.carousel');
+let isDragging = false;
+let startX;
+let scrollLeft;
+
+const goToCB = () => {
+  window.location.href = 'https://www.compartamos.com.mx/compartamos';
+}
+
+const goToAbout = () => {
+  window.location.href = 'acerca-de.html';
+}
+
+const goToWinners = () => {
+  window.location.href = 'ganadores.html';
+}
+
+document.getElementById('hamburger-icon').addEventListener('click', function() {
+  this.classList.toggle('active');
+  document.getElementById('mobile-nav').classList.toggle('active');
+});
+
+carousel.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  startX = e.pageX - carousel.offsetLeft;
+  scrollLeft = carousel.scrollLeft;
+});
+
+carousel.addEventListener('touchstart', (e) => {
+  isDragging = true;
+  startX = e.touches[0].clientX - carousel.offsetLeft;
+  scrollLeft = carousel.scrollLeft;
+});
+
+carousel.addEventListener('mouseup', () => {
+  isDragging = false;
+});
+
+carousel.addEventListener('touchend', () => {
+  isDragging = false;
+});
+
+carousel.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - carousel.offsetLeft;
+  const walk = (x - startX) * 3;
+  carousel.scrollLeft = scrollLeft - walk;
+});
+
+carousel.addEventListener('touchmove', (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.touches[0].clientX - carousel.offsetLeft;
+  const walk = (x - startX) * 3;
+  carousel.scrollLeft = scrollLeft - walk;
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const buttons = document.querySelectorAll('.carousel-button');
+  buttons[0].classList.add('selected');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+    });
+  });
+});
+
+const groups = {
+  Participacion_familiar: [
+      {
+          number: "1",
+          name: "Martha Ramón",
+          image: "./assets/images/ganadores/yastas-participante-1.png",
+          description: "Su historia es un ejemplo de inclusión financiera, Martha ha logrado impulsar a su comunidad a través de los servicios de <a href='https://www.yastas.com/' target='_blank' class='link-yastas'>Yastás</a>.",
+          videoId: "8VE4moocPTo"
+      }
+  ]
+};
+
+
+
+
+var currentGroupData = [];
+document.addEventListener('DOMContentLoaded', async function () {
+  const buttons = document.querySelectorAll('.carousel-button');
+  const prevButton = document.getElementById('prev-button');
+  const nextButton = document.getElementById('next-button');
+  let currentIndex = 0;
+  const competitorGroup = document.querySelector('.competitor-group');
+  currentGroupData = [];
+  updateGroupContent(buttons[0].textContent,0, groups[buttons[0].getAttribute('data-group')], false);
+  buttons.forEach((button,index) => {
+    let disabled = false;
+    const group = button.getAttribute('data-group');
+    button.addEventListener('click', function () {
+      const groupKey = Object.keys(groups)[index];
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      currentGroupData = groups[group];
+      updateGroupContent(button.textContent,index+1, groups[group], disabled);
+    });
+  });
+  updateCarouselArrow(0);
+
+  function updateSelectedButton() {
+    buttons.forEach(btn => btn.classList.remove('selected'));
+    buttons[currentIndex].classList.add('selected');
+    updateCarouselArrow(currentIndex);
+  }
+
+  prevButton.addEventListener('click', function () {
+    currentIndex = (currentIndex > 0) ? currentIndex - 1 : buttons.length - 1;
+    updateSelectedButton();
+    updateGroupContent(buttons[currentIndex].textContent, currentIndex + 1, groups[buttons[currentIndex].getAttribute('data-group')], false);
+  });
+
+  nextButton.addEventListener('click', function () {
+    currentIndex = (currentIndex < buttons.length - 1) ? currentIndex + 1 : 0;
+    updateSelectedButton();
+    updateGroupContent(buttons[currentIndex].textContent, currentIndex + 1, groups[buttons[currentIndex].getAttribute('data-group')], false);
+  });
+
+  function updateGroupContent(groupName,groupNumber,groupData, disabled) {
+      competitorGroup.innerHTML = '';
+
+      groupData.forEach((competitor,index) => {
+          competitorGroup.innerHTML += `
+              <div class="competitor">
+                  <div class="competitor-img">
+                      <img src="${competitor.image}" alt="${competitor.name}" width="150" height="60" />
+                  </div>
+              </div>
+                  <div class="actions">
+                      <div class="history">
+                          <p class="competitor-name">${competitor.name}</p>
+                          <p class="competitor-group-name">${groupName}</p>
+                          <p id="competitor-description" class="description">${competitor.description}</p>
+                          <div class="button-container"
+                            onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}')"
+                          >
+                              <button class="watch-video">
+                                <p>Conoce su historia</p><div class="play-button"><img src="./assets/images/icon_play.png" alt="bubble" /></div>
+                              </button>
+                          </div>
+                      </div> 
+                  </div>
+          `;
+
+          const descriptions = document.querySelectorAll('#competitor-description');
+  
+          let maxHeight = 0;
+        
+          descriptions.forEach(description => {
+            if (description.offsetHeight > maxHeight) {
+              maxHeight = description.offsetHeight;
+            }
+          });
+        
+          descriptions.forEach(description => {
+            description.style.height = maxHeight + 'px';
+          });
+      });
+  }
+});
+
+
+
+const updateCarouselArrow = (index) => {
+  if(index == 0) {
+    $carouselLeftArrow.classList.remove('active');
+    $carouselLeftArrow.classList.add('inactive');
+  }
+  else {
+    $carouselLeftArrow.classList.remove('inactive');
+    $carouselLeftArrow.classList.add('active');
+  }
+  if(index == Object.keys(groups).length-1) {
+    $carouselRightArrow.classList.remove('active');
+    $carouselRightArrow.classList.add('inactive');
+  }
+  else {
+    $carouselRightArrow.classList.remove('inactive');
+    $carouselRightArrow.classList.add('active');
+  }
+}
+
+function share(to) {
+  const currentUrl = encodeURIComponent(window.location.href);
+  url = "";
+  switch (to) {
+    case 'Facebook':
+      url = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+      break;
+    case 'Whatsapp':
+      url = `https://wa.me/?text=${currentUrl}`;
+      break;
+  }
+  if (url) {
+    window.open(url, "_blank");
+  }
+}
+
+let currentIndex = 0;
+const $galleryItems = document.querySelectorAll('.gallery-item img');
+const $modalViewGallery = document.getElementById("gallery-view-modal");
+const $fullGallery = document.getElementById("gallery-modal");
+const $imageCount = document.getElementById('image-count');
+const $modalImg = document.getElementById('gallery-image');
+const $leftArrow = document.getElementById('left-arrow');
+const $rightArrow = document.getElementById('right-arrow');
+let totalImages = $galleryItems.length;
+$imageCount.textContent = `${totalImages}`;
+
+document.querySelectorAll('.gallery-item img').forEach((img, index) => {
+  img.addEventListener('click', function() {
+    openModalGallery(this.src,index);
+  });
+});
+
+const openModalGallery = (imageSrc, index) => {
+  onGallery(imageSrc)
+  currentIndex = index;
+  const $galleryImage = document.getElementById("gallery-image");
+  updateImageIndex();
+  $galleryImage.src= imageSrc;
+  $modalViewGallery.style.display = "block";
+  updateGalleryArrow(index);
+};
+
+const closeModalGallery = () => {
+  if ($modalViewGallery) {
+    $modalViewGallery.style.display = "none";
+  }
+};
+
+const openFullGallery = () => {
+  window.location.href= "galeria.html"
+};
+
+const closeFullGallery = () => {
+  if ($fullGallery) {
+    $fullGallery.style.display = "none";
+  }
+};
+
+function updateImageIndex() {
+  const $imageIndex = document.getElementById('imageIndex');
+  $imageIndex.textContent = `${currentIndex + 1} / ${totalImages}`;
+  updateGalleryArrow(currentIndex)
+}
+
+const prevImage = () => {
+  currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalImages - 1;
+  onGallery($galleryItems[currentIndex].src)
+  $modalImg.src = $galleryItems[currentIndex].src;
+  updateImageIndex();
+}
+
+const nextImage = () => {
+  currentIndex = (currentIndex < totalImages - 1) ? currentIndex + 1 : 0;
+  onGallery($galleryItems[currentIndex].src)
+  $modalImg.src = $galleryItems[currentIndex].src;
+  updateImageIndex();
+}
+
+const updateGalleryArrow = (index) => {
+  if(index == 0) {
+    $leftArrow.classList.remove('active');
+    $leftArrow.classList.add('inactive');
+  }
+  else {
+    $leftArrow.classList.remove('inactive');
+    $leftArrow.classList.add('active');
+  }
+  if(index == totalImages-1) {
+    $rightArrow.classList.remove('active');
+    $rightArrow.classList.add('inactive');
+  }
+  else {
+    $rightArrow.classList.remove('inactive');
+    $rightArrow.classList.add('active');
+  }
+}
+
+// MARK: HELPERS
+
+function getFullImageUrl(localPath) {
+  return `${window.location.origin}/${localPath.replace("./", "")}`;
+}
+
 /**
- * @typedef {'enterprise' | 'history' | 'moments'} VideoCategory
+ * Formats a duration from seconds into a string formatted as mm:ss.
+ * @param {number} duration - The video duration in seconds.
+ * @returns {string} The formatted duration in the format of mm:ss.
  */
+const formatDuration = (duration) => {
+  const minutes = Math.floor(duration / 60);
+  const seconds = Math.floor(duration % 60);
 
-// MARK: CONSTANTS
-// Variables
-const PERCENTAGE_THRESHOLDS = [10, 25, 50, 75];
-/** @type {{[key in VideoCategory]: string}} */
-const VIDEOS_SRC = {
-  enterprise: buildYoutubeEmbedLink("wR7bEp9A_j0"),
-  history: buildYoutubeEmbedLink("wR7bEp9A_j0"),
-  moments: buildYoutubeEmbedLink("wR7bEp9A_j0"),
+  const paddedMinutes = String(minutes).padStart(2, "0");
+  const paddedSeconds = String(seconds).padStart(2, "0");
+
+  return `${paddedMinutes}:${paddedSeconds}`;
 };
 
-/** @type {{[key in VideoCategory]: string}} */
-const IMAGES_SRC = {
-  enterprise: "./assets/images/premio_emprendedores.jpg",
-  history: "./assets/images/yastas-participante-1.png",
-  moments: "./assets/images/burbuja_principal.png",
+/**
+ * Calculates the scroll percentage of the webpage.
+ * @returns {number} The scroll percentage, a value between 0 and 100.
+ */
+const calculateScrollPercentage = () => {
+  // Getting the scroll position of the current document
+  const scrollTop =
+    document.documentElement.scrollTop || document.body.scrollTop;
+
+  // Getting the entire height of the document
+  const scrollHeight =
+    document.documentElement.scrollHeight || document.body.scrollHeight;
+
+  // Getting the height of the viewport
+  const clientHeight = document.documentElement.clientHeight;
+
+  // The total scrollable area is the total height minus the viewport height
+  const scrollableHeight = scrollHeight - clientHeight;
+
+  // Calculating the percentage of the scroll
+  const scrolledPercentage = Math.floor((scrollTop / scrollableHeight) * 100);
+
+  return scrolledPercentage;
 };
+
+/**
+ * Combines an array of objects into a single object.
+ * @param {Object[]} arrayOfObjects - The array of objects to combine.
+ * @return {Object} - The combined object.
+ */
+const combineObjects = (arrayOfObjects) => {
+  return arrayOfObjects.reduce((accumulator, currentObject) => {
+    return { ...accumulator, ...currentObject };
+  }, {});
+};
+
+/**
+ * Saves an object to localStorage.
+ * @param {string} key - The key under which to store the object.
+ * @param {Object} objectToSave - The object to save.
+ */
+const saveToLocalStorage = (key, objectToSave) => {
+  const objectString = JSON.stringify(objectToSave);
+  window.localStorage.setItem(key, objectString);
+};
+
+/**
+ * Retrieves an object from localStorage.
+ * @param {string} key - The key of the object to retrieve.
+ * @return {Object|null} - The retrieved object or null if not found.
+ */
+const retrieveFromLocalStorage = (key) => {
+  const objectString = window.localStorage.getItem(key);
+  return objectString ? JSON.parse(objectString) : null;
+};
+
+/**
+ * Generates a YouTube embed URL for a given video ID.
+ * @param {string} videoId - The unique identifier for a YouTube video.
+ * @returns {string} The full embed URL for the specified YouTube video.
+ */
+function buildYoutubeEmbedLink(videoId) {
+  return "https://www.youtube.com/embed/" + videoId;
+}
 
 const GALLERY_IMAGES = [
-  "./assets/images/gallery_1.png",
-  "./assets/images/gallery_2.png",
-  "./assets/images/gallery_3.png",
-  "./assets/images/gallery_4.png",
-  "./assets/images/gallery_5.png",
+  "./assets/images/gallery-1.png",
+  "./assets/images/gallery-2.png",
+  "./assets/images/gallery-3.png",
+  "./assets/images/gallery-4.png",
+  "./assets/images/gallery-5.png",
+  "./assets/images/gallery-6.png",
+  "./assets/images/gallery-7.png",
 ];
 
-// HTMLElements
-/** @type {HTMLDivElement | null} */
-const $TOGGLE_BUTTON = document.getElementById("navbar-toggle");
-/** @type {HTMLDivElement | null} */
-const $MENU = document.getElementById("navbar-menu");
-/** @type {HTMLImageElement | null} */
-const $CLOSE_BUTTON = document.getElementById("close-btn");
-/** @type {HTMLDivElement | null} */
-const $VIDEO_MODAL = document.getElementById("video-modal");
-
-// Gallery
-/** @type {HTMLSpanElement | null} */
-const $GALLERY_AMOUNT = document.getElementById("gallery-amount");
-
-// Gallery fullscreen
 /** @type {HTMLDivElement | null} */
 const $GALLERY_MODAL = document.getElementById("gallery-modal");
 /** @type {HTMLImageElement | null} */
@@ -59,352 +565,15 @@ const $GALLERY_COUNTER = document.getElementById("counter-number");
 const $GALLERY_SHARE = document.getElementById("gallery-share");
 /** @type {HTMLDivElement | null} */
 const $SHARE_DROPDOWN = document.getElementById("share-dropdown");
-// MARK: UTILS
-/**
- * Handles clicking the share to Facebook button.
- */
-function shareToFacebook() {
-  const currentUrl = encodeURIComponent(window.location.href);
-  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}&amp;src=sdkpreparse`;
-  window.open(facebookUrl, "_blank");
-}
 
-/**
- * Handles clicking the share to WhatsApp button.
- */
-function shareToWhatsapp() {
-  const currentUrl = encodeURIComponent(window.location.href);
-  const message = encodeURIComponent(""); // Example message
-  const whatsAppUrl = `https://wa.me/?text=${message}${currentUrl}`;
-  window.open(whatsAppUrl, "_blank");
-}
 
-/**
- * Navigates to a given URL.
- * @param {string} url The URL to navigate to.
- * @param {'_self' | '_blank' | '_parent' | '_top' | '_unfencedTop'} [target] Where to display the linked URL
- */
-function navigateTo(url, target = "_self") {
-  window.open(url, target);
-}
-
-function getFullImageUrl(localPath) {
-  return `${window.location.origin}/${localPath.replace("./", "")}`;
-}
-
-/**
- * Generates a YouTube embed URL for a given video ID.
- * @param {string} videoId - The unique identifier for a YouTube video.
- * @returns {string} The full embed URL for the specified YouTube video.
- */
-function buildYoutubeEmbedLink(videoId) {
-  return "https://www.youtube.com/embed/" + videoId;
-}
-
-/**
- * Extracts the YouTube video ID from a given embed URL.
- * @param {string} embedUrl - The YouTube embed URL.
- * @returns {string|null} The video ID extracted from the embed URL, or null if not found.
- */
-function extractYoutubeVideoId(embedUrl) {
-  // Example of embedUrl: "https://www.youtube.com/embed/VIDEO_ID"
-
-  // Regular expression to match the video ID pattern in the embed URL
-  const regex = /(?:embed\/|v=)([\w-]+)/;
-
-  // Use regex to extract the video ID
-  const match = embedUrl.match(regex);
-
-  // If match is found, return the video ID (first capturing group)
-  // Otherwise, return null
-  return match ? match[1] : null;
-}
-
-/**
- * Calculates the percentage of a video watched.
- * @param {number} totalDuration - Total time of the video in seconds.
- * @param {number} timeWatched - Time of the video watched in seconds.
- * @returns {number} Percentage of the video watched, rounded to two decimal places.
- */
-function calculateWatchedPercentage(totalDuration, timeWatched) {
-  const percentage = Math.floor((timeWatched / totalDuration) * 100);
-  return percentage;
-}
-
-/**
- * This function keeps track of which thresholds have been met.
- * @param {number[]} thresholds
- * @returns {Record<number, boolean>}
- */
-function createWatchedThresholds(thresholds) {
-  return thresholds.reduce((acc, cur) => ((acc[cur] = false), acc), {});
-}
-
-/** Checks the video progress and triggers the callback if a threshold is reached.
- * @param {number[]} thresholds
- * @param {Record<number, boolean>} watchedThresholds
- */
-function checkVideoProgress(thresholds, watchedThresholds) {
-  const totalDuration = player.getDuration();
-  const currentTime = player.getCurrentTime();
-  const watchedPercentage = calculateWatchedPercentage(
-    totalDuration,
-    currentTime
-  );
-
-  if (
-    thresholds.includes(watchedPercentage) &&
-    !watchedThresholds[watchedPercentage]
-  ) {
-    watchedThresholds[watchedPercentage] = true;
-    onThresholdReached(watchedPercentage);
-  }
-}
-
-/**
- * Calculates the closest percentage based on predefined thresholds.
- * @param {number} totalDuration - Total time of the video in seconds.
- * @param {number} timeWatched - Time of the video watched in seconds.
- * @returns {number} Percentage of the video watched, rounded to two decimal places.
- */
-function calculateClosestWatchedPercentage(totalDuration, timeWatched) {
-  const percentage = (timeWatched / totalDuration) * 100;
-  const closestPercentage = PERCENTAGE_THRESHOLDS.reduce((prev, curr) =>
-    Math.abs(curr - percentage) < Math.abs(prev - percentage) ? curr : prev
-  );
-  return closestPercentage;
-}
-
-/**
- *  @param {HTMLIFrameElement} $iframe
- * @param {string} attributeName
- * @param {string} attributeValue
- * @returns {void}
- */
-function setAttributeToYoutubePlayer($iframe, attributeName, attributeValue) {
-  $iframe.setAttribute(attributeName, attributeValue);
-}
-
-// MARK: NAVBAR
-if ($TOGGLE_BUTTON && $MENU && $CLOSE_BUTTON) {
-  $TOGGLE_BUTTON.addEventListener("click", function () {
-    $MENU.classList.toggle("active");
-    document.body.classList.toggle("no-scroll");
-  });
-
-  $CLOSE_BUTTON.addEventListener("click", function () {
-    $MENU.classList.remove("active");
-    document.body.classList.remove("no-scroll");
-  });
-}
-
-// MARK: MODALS
-/**
- * Opens the video modal
- * @param {VideoCategory} videoCategory
- */
-function openVideoModal(videoCategory) {
-  if ($VIDEO_MODAL) {
-    //Load video
-    loadYoutubeVideo(
-      extractYoutubeVideoId(VIDEOS_SRC[videoCategory]),
-      videoCategory
-    );
-    $VIDEO_MODAL.style.display = "block";
-    if (videoCategory === "history") {
-      onKnowTheStory(VIDEOS_SRC[videoCategory], IMAGES_SRC[videoCategory]);
-    }
-  }
-}
-
-/** Closes the video modal */
-function closeVideoModal() {
-  if ($VIDEO_MODAL) {
-    if (player) {
-      const $iframe = player.getIframe();
-      onVideoPause(
-        $iframe.getAttribute("video-category"),
-        calculateClosestWatchedPercentage(
-          player.getDuration(),
-          player.getCurrentTime()
-        ),
-        player.getVideoUrl()
-      );
-
-      destroyPlayer();
-      isFirstPlay = true;
-    }
-    $VIDEO_MODAL.style.display = "none";
-  }
-}
-
-// MARK: YOUTUBE API
-let player;
-let intervalId;
-let watchedThresholds = createWatchedThresholds(PERCENTAGE_THRESHOLDS);
-
-/**
- * Function to load YouTube player API
- * @param {string} videoId YouTube video ID that is going to be reproduced
- * @param {string} videoCategory Video category
- */
-function loadYoutubeVideo(videoId, videoCategory) {
-  if (player) {
-    destroyPlayer();
-  }
-
-  player = new YT.Player("player", {
-    videoId: videoId,
-    playerVars: {
-      playsinline: 1,
-      rel: 0,
-    },
-    events: {
-      onReady: onPlayerReady,
-      onStateChange: onPlayerStateChange,
-    },
-  });
-
-  setAttributeToYoutubePlayer(
-    player.getIframe(),
-    "video-category",
-    videoCategory
-  );
-}
-
-/** Destroys the existing player and clears the interval. */
-function destroyPlayer() {
-  if (player) {
-    player.destroy();
-    rewatch = false;
-  }
-  if (intervalId) {
-    clearInterval(intervalId);
-  }
-}
-
-/** Executes when the player is ready. */
-function onPlayerReady() {
-  watchedThresholds = createWatchedThresholds(PERCENTAGE_THRESHOLDS);
-  intervalId = setInterval(
-    checkVideoProgress(PERCENTAGE_THRESHOLDS, watchedThresholds),
-    100
-  );
-}
-
-/**
- * Callback function to execute when a percentage threshold is reached.
- * @param {number} threshold - The percentage threshold reached.
- */
-function onThresholdReached(threshold) {
-  /** @type {HTMLIFrameElement} */
-  const videoUrl = player.getVideoUrl();
-
-  onVideoPause($iframe.getAttribute("video-category"), threshold, videoUrl);
-}
-
-let done = false;
-let isFirstPlay = true;
-let rewatch = false;
-/**
- * This event fires whenever the player's state changes.
- * @param {{target: Object, data: number}} event
- */
-function onPlayerStateChange(event) {
-  const videoDuration = player.getDuration();
-  const videoUrl = player.getVideoUrl();
-  /** @type {HTMLIFrameElement} */
-  const $iframe = player.getIframe();
-  const videoCategory = $iframe.getAttribute("video-category");
-
-  if (event.data === YT.PlayerState.PLAYING) {
-    if (isFirstPlay) {
-      onVideoStart(videoCategory, videoUrl);
-      isFirstPlay = false;
-    }
-
-    if (rewatch) {
-      onVideoStart(videoCategory, videoUrl);
-      onPlayerReady();
-      rewatch = false;
-    }
-  }
-
-  if (event.data === YT.PlayerState.PAUSED) {
-    const timeWatched = calculateClosestWatchedPercentage(
-      videoDuration,
-      player.getCurrentTime()
-    );
-    onVideoPause(videoCategory, timeWatched, videoUrl);
-  }
-
-  if (event.data === YT.PlayerState.ENDED) {
-    onVideoCompletion(videoCategory, videoUrl);
-    rewatch = true;
-    clearInterval(intervalId);
-  }
-}
-
-// MARK: GALLERY - FULLSCREEN
-let currentImageIndex = 0;
-
-function openGalleryModal(index) {
-  currentImageIndex = index;
-  if ($GALLERY_MODAL) {
-    document.body.classList.toggle("no-scroll");
-    $GALLERY_MODAL.style.display = "flex";
-    showImage($GALLERY_IMAGE, GALLERY_IMAGES, index);
-    updateGalleryCounter(index + 1);
-    onGallery(GALLERY_IMAGES[index]);
-  }
-}
-
-function closeGalleryModal() {
-  if ($GALLERY_MODAL) {
-    document.body.classList.remove("no-scroll");
-    $GALLERY_MODAL.style.display = "none";
-  }
-}
-
-function updateGalleryCounter(number) {
-  if ($GALLERY_COUNTER) {
-    $GALLERY_COUNTER.innerText = `${number}/${GALLERY_IMAGES.length}`;
-  }
-}
-
-function nextImage() {
-  currentImageIndex = (currentImageIndex + 1) % GALLERY_IMAGES.length;
-  onGallery(GALLERY_IMAGES[currentImageIndex]);
-  showImage($GALLERY_IMAGE, GALLERY_IMAGES, currentImageIndex);
-  updateGalleryCounter(currentImageIndex + 1);
-}
-
-function prevImage() {
-  currentImageIndex =
-    currentImageIndex === 0 ? GALLERY_IMAGES.length - 1 : currentImageIndex - 1;
-  onGallery(GALLERY_IMAGES[currentImageIndex]);
-  showImage($GALLERY_IMAGE, GALLERY_IMAGES, currentImageIndex);
-  updateGalleryCounter(currentImageIndex + 1);
-}
-
-/**
- * Changes the current image on the fullscreen gallery
- * @param {HTMLImageElement} container
- * @param {string[]} images
- * @param {number} imageIndex
- */
-function showImage(container, images, imageIndex) {
-  container.src = images[imageIndex];
-}
-
-// MARK: Web Share API
 /**
  * Downloads the currently selected image from the gallery.
  * @returns {void}
  * @throws {Error} If the currentImageUrl is not valid or if the download fails.
  */
 function download() {
-  const currentImageUrl = getCurrentImageUrl(currentImageIndex);
+  const currentImageUrl = getCurrentImageUrl(currentIndex);
   if (!currentImageUrl) {
     throw new Error("URL de imagen no válida.");
   }
@@ -455,7 +624,7 @@ function getCurrentImageUrl(index) {
  */
 async function share() {
   try {
-    const currentImageUrl = getCurrentImageUrl(currentImageIndex);
+    const currentImageUrl = getCurrentImageUrl(currentIndex);
     const blob = await fetchImageBlob(currentImageUrl);
     const file = createFileFromBlob(blob, currentImageUrl);
 
@@ -625,17 +794,17 @@ function bindOutsideClick(shareDropdown, galleryShare) {
 
 /**
  * Shares an image link on Facebook.
- * @param {number} [imageIndex=currentImageIndex] - The index of the image to share. Defaults to currentImageIndex.
+ * @param {number} [imageIndex=currentIndex] - The index of the image to share. Defaults to currentImageIndex.
  */
-function shareInFacebook(imageIndex = currentImageIndex) {
+function shareInFacebook(imageIndex = currentIndex) {
   shareOnPlatform(imageIndex, "https://www.facebook.com/sharer/sharer.php?u=");
 }
 
 /**
  * Shares an image link on WhatsApp.
- * @param {number} [imageIndex=currentImageIndex] - The index of the image to share. Defaults to currentImageIndex.
+ * @param {number} [imageIndex=currentIndex] - The index of the image to share. Defaults to currentImageIndex.
  */
-function shareInWhatsapp(imageIndex = currentImageIndex) {
+function shareInWhatsapp(imageIndex = currentIndex) {
   shareOnPlatform(imageIndex, "https://wa.me/?text=");
 }
 
@@ -655,10 +824,6 @@ function shareOnPlatform(imageIndex, baseUrl) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  if ($GALLERY_AMOUNT) {
-    $GALLERY_AMOUNT.innerText = GALLERY_IMAGES.length;
-  }
-
   if ($SHARE_DROPDOWN && $GALLERY_SHARE) {
     bindOutsideClick($SHARE_DROPDOWN, $GALLERY_SHARE);
   }
