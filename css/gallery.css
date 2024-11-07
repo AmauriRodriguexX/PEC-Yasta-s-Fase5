@@ -69,7 +69,6 @@ header {
 
 header img {
   object-fit: cover;
-  margin-left: 1rem;
 }
 
 header a {
@@ -532,7 +531,7 @@ footer address {
     margin-bottom: 2rem;
     margin-top: 0;
     font-size: 3rem;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   header {

@@ -301,6 +301,7 @@ main div {
   padding-bottom: 2.81rem;
   display: flex;
   justify-content: center;
+  display: none;
 }
 
 #winners .carousel-container .carousel {
@@ -359,7 +360,7 @@ main div {
   width: 100%;
   height: 18.22613rem;
   border-radius: 3.39169rem;
-  margin-bottom: 80px !important;
+  margin-bottom: 24px !important;
 }
 
 #winners .group .competitor-group .competitor .competitor-img {
@@ -1935,7 +1936,7 @@ footer address {
   position: relative;
   width: 250px;
   height: 250px;
-  border-radius: 29.336px;
+  border-radius: 60px;
   border: 2px solid #652D86;
 }
 
@@ -1997,8 +1998,9 @@ footer address {
 }
 
 .results-percentage .percentage {
-  font-size: 36.581px;
+  font-size: 30px;
   font-weight: 500;
+  color: #64257e;
 }
 
 .story-container {
@@ -2061,7 +2063,8 @@ footer address {
     width: 100%;
     height: 344px;
     border-radius: 60px;
-    border: 2px solid #CE0058;
+    border: 2px solid #652D86;
+    margin-bottom: 16px;
   }
 
   .img-responsive-person {
