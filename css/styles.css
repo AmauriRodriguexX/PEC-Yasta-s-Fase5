@@ -2032,6 +2032,12 @@ footer address {
     padding-inline: 21px;
     margin-inline: inherit;
     max-width: 1200px;
+  }
+
+  .containercount {
+    padding-inline: 0px;
+    margin-inline: inherit;
+    max-width: 1200px;
 }
   /* Contenedor principal del slider */
   .votes_container {
