@@ -360,7 +360,7 @@ main div {
   width: 100%;
   height: auto;
   border-radius: 3.39169rem;
-  margin-bottom: 24px !important;
+  margin-bottom: 40px !important;
 }
 
 #winners .group .competitor-group .competitor .competitor-img {
@@ -425,11 +425,12 @@ main div {
   width: 80%;
   padding: 1.1rem .56rem;
   font-weight: 700;
-  margin-top: 1rem;
+  margin: 1rem auto 0;
   font-family: "inter";
   color: var(--charcoal-gray);
   background-color: transparent;
 }
+
 
 #winners .group .competitor-group .actions .watch-video p {
   color: var(--deep-pink) !important;
