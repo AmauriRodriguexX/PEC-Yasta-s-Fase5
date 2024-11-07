@@ -425,11 +425,17 @@ main div {
   width: 80%;
   padding: 1.1rem .56rem;
   font-weight: 700;
-  margin: 1rem auto 0;
   font-family: "inter";
   color: var(--charcoal-gray);
   background-color: transparent;
 }
+
+@media (max-width: 768px) {
+  #winners .group .competitor-group .actions .watch-video {
+      margin: 1rem auto 0; /* Margen solo en mobile */
+  }
+}
+
 
 
 #winners .group .competitor-group .actions .watch-video p {
