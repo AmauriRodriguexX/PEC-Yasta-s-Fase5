@@ -169,8 +169,8 @@ footer > div .info {
   margin-bottom: 32px;
 }
 
-footer > div .info > img {
-  object-fit: scale-down;
+footer > div .info > img.logo {
+  cursor: pointer;
   width: 150px;
 }
 
