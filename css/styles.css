@@ -1934,7 +1934,7 @@ footer address {
 .framework {
   position: relative;
   width: 250px;
-  height: 290px;
+  height: 250px;
   border-radius: 29.336px;
   border: 2px solid #652D86;
 }
@@ -1972,7 +1972,8 @@ footer address {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  row-gap: 5.98px;
+  row-gap: 16px;
+  transform: translate(0px, 16px);
   align-items: flex-start;
 }
 
@@ -2058,7 +2059,7 @@ footer address {
   .framework {
     position: relative;
     width: 100%;
-    height: 438px;
+    height: 344px;
     border-radius: 60px;
     border: 2px solid #CE0058;
   }
@@ -2076,6 +2077,7 @@ footer address {
     display: flex;
     justify-content: flex-start;
     margin-bottom: 40px;
+    margin-top: 16px;
     position: relative;
     z-index: 99;
   }
@@ -2090,7 +2092,7 @@ footer address {
     cursor: pointer;
   }
   .dot.active {
-    background-color: #CE0058; 
+    background-color: #652D86; 
     width: 19px;
     border-radius: 25px;
    
