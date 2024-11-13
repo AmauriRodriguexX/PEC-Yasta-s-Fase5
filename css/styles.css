@@ -179,7 +179,7 @@ main .img-container {
   margin-bottom: 5rem;
   width: 100%;
   margin-top: 3.5rem;
-  height: 18rem;
+  height: auto;
 }
 
 main .image_mobile {
