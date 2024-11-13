@@ -168,18 +168,47 @@
         'CDFunnel': 'PE Etapa Final 2024'
       });
     }
-    function registrarEvento() {
+
+    function registrarEventoCompartir(Compartir) {
       dataLayer.push({
         'event': 'galeria_PEC',
         'CDCategory': 'Galería etapa final PEC',
-        'CDAction': 'compartir_foto',
+        'CDAction': 'compartir',
         'CDLabel': 'facebook',
         'CDFunnel': 'PE Etapa Final 2024',
-        'CDValue': '/assets/images/galeria/imagen_final_ganadores.png',
-        'CDNombre': 'compartir' // Nombre descriptivo adicional
+        'CDValue': '/assets/images/imagen_final_ganadores.png'
       });
     }
+    // Inicialización de dataLayer
+    window.dataLayer = window.dataLayer || [];
 
+    // Función para compartir en Facebook
+    function shareInFacebook() {
+      dataLayer.push({
+        'event': 'galeria_PEC',
+        'cdCategory': 'Galería etapa final PEC',
+        'cdAction': 'compartir_foto',
+        'cdLabel': 'facebook',
+        'cdFunnel': 'PE Etapa Final 2024',
+        'cdValue': '/assets/images/galeria/imagen_final_ganadores.png'
+      });
+      console.log("Evento de Facebook registrado en dataLayer.");
+      // Lógica adicional para compartir en Facebook
+    }
+
+    // Función para compartir en WhatsApp
+    function shareInWhatsapp() {
+      dataLayer.push({
+        'event': 'galeria_PEC',
+        'cdCategory': 'Galería etapa final PEC',
+        'cdAction': 'compartir_foto',
+        'cdLabel': 'whatsapp',
+        'cdFunnel': 'PE Etapa Final 2024',
+        'cdValue': '/assets/images/galeria/imagen_final_ganadores.png'
+      });
+      console.log("Evento de WhatsApp registrado en dataLayer.");
+      // Lógica adicional para compartir en WhatsApp
+    }
   </script>
 
   <script src="js/gallery.js?v=1.0.0"></script>
