@@ -1214,7 +1214,7 @@ footer address {
     margin-bottom: 5rem;
     width: 35.625rem;
     margin-top: 8.5rem;
-    height: 28rem;
+    height: auto;
     border-radius: 10px;
   }
 
