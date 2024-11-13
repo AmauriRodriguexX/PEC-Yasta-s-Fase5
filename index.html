@@ -103,10 +103,12 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="openVideoModal('Martha Ramón'); onKnowTheStory('Martha Ramón')">
-            <span>Conoce mi historia</span>
-            <img src="./assets/images/icon_play.jpg" alt="Botón play" />
+            onclick="openModal('wR7bEp9A_j0', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo'); onKnowTheStory('Martha Ramón')">
+            <span>Conoce su historia</span>
+            <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
+
+
         </div>
       </div>
       <div class="competitor_container">
@@ -129,10 +131,11 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="openVideoModal('María Candila'); onKnowTheStory('María Candila')">
-            <span>Conoce mi historia</span>
-            <img src="./assets/images/icon_play.jpg" alt="Botón play" />
+            onclick="openModal('JTP_RoWRr0c', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo'); onKnowTheStory('Martha Ramón')">
+            <span>Conoce su historia</span>
+            <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
+
         </div>
       </div>
       <div class="competitor_container">
@@ -155,10 +158,11 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="openVideoModal('Uvaldo Baron'); onKnowTheStory('Uvaldo Baron')">
-            <span>Conoce mi historia</span>
-            <img src="./assets/images/icon_play.jpg" alt="Botón play" />
+            onclick="openModal('NWa83GptpSY', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo'); onKnowTheStory('Martha Ramón')">
+            <span>Conoce su historia</span>
+            <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
+
         </div>
       </div>
     </div>
@@ -233,23 +237,35 @@
     </div>
     <div class="gallery">
       <div class="gallery-item">
-        <img src="./assets/images/gallery_5.png" alt="Imagen 1" data-index="0">
+        <img src="./assets/images/Galería/gallery-1.jpg" alt="Imagen 1" data-index="0">
       </div>
       <div class="gallery-item">
-        <img src="./assets/images/gallery-2.png" alt="Imagen 2" data-index="1">
+        <img src="./assets/images/Galería/gallery-2.jpg" alt="Imagen 2" data-index="1">
       </div>
       <div class="gallery-item">
-        <img src="./assets/images/gallery-3.png" alt="Imagen 3" data-index="2">
+        <img src="./assets/images/Galería/gallery-3.jpg" alt="Imagen 3" data-index="2">
       </div>
       <div class="gallery-item">
-        <img src="./assets/images/gallery-4.png" alt="Imagen 3" data-index="3">
+        <img src="./assets/images/Galería/gallery-4.jpg" alt="Imagen 3" data-index="2">
       </div>
       <div class="gallery-item">
-        <img src="./assets/images/gallery_5.png" alt="Imagen 3" data-index="4">
+        <img src="./assets/images/Galería/gallery-5.jpg" alt="Imagen 3" data-index="3">
       </div>
-    </div>
-    <div class="button-container">
-      <button onclick="openFullGallery()">Ver todo</button>
+      <div class="gallery-item">
+        <img src="./assets/images/Galería/gallery-6.jpg" alt="Imagen 3" data-index="4">
+      </div>
+      <div class="gallery-item">
+        <img src="./assets/images/Galería/gallery-7.jpg" alt="Imagen 3" data-index="4">
+      </div>
+      <div class="gallery-item">
+        <img src="./assets/images/Galería/gallery-8.jpg" alt="Imagen 3" data-index="4">
+      </div>
+      <div class="gallery-item">
+        <img src="./assets/images/Galería/gallery-9.jpg" alt="Imagen 3" data-index="4">
+      </div>
+      <div class="gallery-item">
+        <img src="./assets/images/Galería/gallery-10.jpg" alt="Imagen 3" data-index="4">
+      </div>
     </div>
   </section>
   <section id="share">
@@ -407,17 +423,28 @@
     }
   </script>
 
+  <!-- dots slider-->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const votesContainer = document.querySelector('.votes_container');
+      // Seleccionar la sección "ganadores" y el contenedor específico de votos
+      const ganadoresSection = document.querySelector('#ganadores');
+      const votesContainer = ganadoresSection.querySelector('.votes_container');
       const competitorContainers = votesContainer.querySelectorAll('.competitor_container');
 
-      // Solo ejecuta este código en dispositivos móviles
+      // Variables para manejar el deslizamiento
+      let startX = 0;
+      let endX = 0;
+
       if (window.innerWidth <= 768) {
+        // Crear el contenedor de dots y botones específicos para "ganadores"
+        const customSectionMove = document.createElement('div');
+        customSectionMove.className = 'custom-section-move';
+
+        // Crear el contenedor de dots
         const dotsContainer = document.createElement('div');
         dotsContainer.className = 'dots_container';
 
-        // Crear un dot por cada tarjeta
+        // Crear un dot por cada tarjeta en el contenedor de "ganadores"
         competitorContainers.forEach((item, index) => {
           const dot = document.createElement('span');
           dot.className = 'dot';
@@ -425,11 +452,30 @@
           dotsContainer.appendChild(dot);
         });
 
-        // Insertar los dots después del contenedor de votos
-        votesContainer.parentNode.appendChild(dotsContainer);
+        // Crear botones de navegación específicos para "ganadores"
+        const prevButton = document.createElement('div');
+        prevButton.id = 'ganadores-prev-button';
+        prevButton.className = 'nav-arrow left-arrow inactive';
+        prevButton.textContent = '←';
 
-        // Función para actualizar los dots según la posición de desplazamiento
-        function updateDots() {
+        const nextButton = document.createElement('div');
+        nextButton.id = 'ganadores-next-button';
+        nextButton.className = 'nav-arrow right-arrow';
+        nextButton.textContent = '→';
+
+        // Insertar botones dentro del contenedor de botones
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.className = 'buttons-container';
+        buttonsContainer.appendChild(prevButton);
+        buttonsContainer.appendChild(nextButton);
+
+        // Insertar dots y botones en la sección "ganadores"
+        customSectionMove.appendChild(dotsContainer);
+        customSectionMove.appendChild(buttonsContainer);
+        votesContainer.parentNode.appendChild(customSectionMove);
+
+        // Función para actualizar dots y botones
+        function updateDotsAndButtons() {
           const scrollPosition = votesContainer.scrollLeft;
           const itemWidth = votesContainer.offsetWidth;
           const index = Math.round(scrollPosition / itemWidth);
@@ -438,24 +484,86 @@
           dots.forEach((dot, idx) => {
             dot.classList.toggle('active', idx === index);
           });
+
+          prevButton.classList.toggle('inactive', index === 0);
+          nextButton.classList.toggle('inactive', index === competitorContainers.length - 1);
+
+          prevButton.style.backgroundColor = index > 0 ? '#652d86' : '#D8DADA';
+          prevButton.style.color = index > 0 ? 'white' : '#9D9D9D';
+          nextButton.style.backgroundColor = index < competitorContainers.length - 1 ? '#652d86' : '#D8DADA';
+          nextButton.style.color = index < competitorContainers.length - 1 ? 'white' : '#9D9D9D';
         }
 
-        // Evento de scroll para actualizar los dots
-        votesContainer.addEventListener('scroll', updateDots);
+        // Evento de scroll para actualizar los dots y botones
+        votesContainer.addEventListener('scroll', updateDotsAndButtons);
 
-        // Permitir que los dots sean clicables
+        // Hacer clic en dots navegable
         dotsContainer.querySelectorAll('.dot').forEach((dot, idx) => {
-          dot.addEventListener('click', function () {
+          dot.addEventListener('click', function (event) {
+            event.stopPropagation();
             votesContainer.scrollTo({
               left: idx * votesContainer.offsetWidth,
               behavior: 'smooth'
             });
           });
         });
+
+        // Funcionalidad de navegación para botones
+        prevButton.addEventListener('click', function (event) {
+          event.stopPropagation();
+          const currentIndex = Math.round(votesContainer.scrollLeft / votesContainer.offsetWidth);
+          if (currentIndex > 0) {
+            votesContainer.scrollTo({
+              left: (currentIndex - 1) * votesContainer.offsetWidth,
+              behavior: 'smooth'
+            });
+          }
+        });
+
+        nextButton.addEventListener('click', function (event) {
+          event.stopPropagation();
+          const currentIndex = Math.round(votesContainer.scrollLeft / votesContainer.offsetWidth);
+          if (currentIndex < competitorContainers.length - 1) {
+            votesContainer.scrollTo({
+              left: (currentIndex + 1) * votesContainer.offsetWidth,
+              behavior: 'smooth'
+            });
+          }
+        });
+
+        // Detectar inicio del deslizamiento
+        votesContainer.addEventListener('touchstart', function (e) {
+          startX = e.touches[0].clientX;
+          e.stopPropagation();
+        });
+
+        // Detectar final del deslizamiento
+        votesContainer.addEventListener('touchend', function (e) {
+          endX = e.changedTouches[0].clientX;
+          e.stopPropagation();
+          handleSwipe();
+        });
+
+        // Manejar deslizamiento
+        function handleSwipe() {
+          const threshold = 50;
+          const currentIndex = Math.round(votesContainer.scrollLeft / votesContainer.offsetWidth);
+
+          if (startX - endX > threshold && currentIndex < competitorContainers.length - 1) {
+            votesContainer.scrollTo({
+              left: (currentIndex + 1) * votesContainer.offsetWidth,
+              behavior: 'smooth'
+            });
+          } else if (endX - startX > threshold && currentIndex > 0) {
+            votesContainer.scrollTo({
+              left: (currentIndex - 1) * votesContainer.offsetWidth,
+              behavior: 'smooth'
+            });
+          }
+        }
       }
     });
   </script>
-
   <script src="js/script.js?v=1.0.0"></script>
   <script src="js/home-events.js?v=1.0.0"></script>
 </body>

@@ -43,7 +43,7 @@
 
 /* MARK: MOBILE */
 header {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -167,7 +167,7 @@ main p{
 span{
   font-family: "Inter";
   text-align: start;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 1.75rem;
@@ -381,6 +381,7 @@ main div {
   font-style: normal;
   font-weight: 700;
   line-height: 1.75rem;
+  cursor: pointer;
   color: var(--deep-pink);
   margin-bottom: 0.62rem;
 }
@@ -620,9 +621,22 @@ main div {
   transform: scale(1.1);
 }
 
-#gallery .gallery-item:nth-child(-n+4) {
-  display: block;
+
+#gallery .gallery-item:nth-child(-n+10) {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columnas */
+  grid-template-rows: repeat(2, auto);   /* 2 filas */
+  gap: 10px; /* Espacio entre imágenes */
 }
+
+#gallery .gallery-item {
+  display: none; /* Ocultar todas las imágenes inicialmente */
+}
+
+#gallery .gallery-item:nth-child(-n+10) {
+  display: block; /* Mostrar solo las primeras 10 imágenes */
+}
+
 
 #gallery .button-container {
   display: flex;
@@ -854,17 +868,26 @@ footer address {
 
 #gallery-view-modal .modal_content {
   position: absolute;
-  left: 10%;
-  top: 10%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: transparent;
   margin: 5% auto;
   padding: 0 0 16px 0;
   border-radius: 8px;
-  width: 80%;
+  width: 40%; /* Ancho por defecto para pantallas grandes */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
+/* Ancho al 80% en dispositivos móviles */
+@media (max-width: 768px) { /* Ajusta el tamaño del breakpoint según tus necesidades */
+  #gallery-view-modal .modal_content {
+    width: 80%;
+  }
+}
+
 
 #gallery-view-modal .modal_content .closable_container {
   display: flex;
@@ -941,7 +964,7 @@ footer address {
   justify-content: center;
   border-radius: 34.5px;
   background-color: var(--deep-pink);
-  /* max-width: 248px; */
+  max-width: -webkit-fill-available;
   margin-inline: auto;
 }
 
@@ -1137,7 +1160,7 @@ footer address {
 
   header {
     justify-content: center;
-    position: fixed;
+    position: absolute;
     width: 100%;
     background-color: white;
     z-index: 998;
@@ -1361,6 +1384,7 @@ footer address {
     margin-top: 1rem;
     margin-left: -1.5rem;
     margin-right: 1.5rem;
+    cursor: pointer;
   }
 
   #winners .group .competitor-group .actions {
@@ -1579,24 +1603,22 @@ footer address {
   }
 
   #gallery .gallery {
-    display: flex;
+    display: grid;
     justify-content: center;
-    margin: 1.5rem auto;
-    max-width: 80%;
+    
     grid-gap: 1.5rem;
-  }
+    grid-template-columns: repeat(5, 1fr);
+}
 
   #gallery .gallery-item {
     overflow: hidden;
     position: relative;
     display: none;  
     width: 13.93rem;
-    height: 13.125rem;  
+    height: 9.125rem;  
   }
 
-  #gallery .gallery-item:nth-child(-n+5) {
-    display: block;
-  }
+  
 
   #gallery .button-container button {
     max-width: 12%;
@@ -1748,13 +1770,10 @@ footer address {
   }
   
   #gallery-view-modal .modal_content {
-    top: 0;
+    top: 40%;
   }
 
-  #gallery-view-modal .modal_content img {
-    max-height: 50dvh;
-    width: auto;
-  }
+  
 
   #gallery-modal .modal_content {
     position: absolute;
@@ -2089,29 +2108,64 @@ footer address {
     margin-top: 32px;
     margin-bottom: 32px;
 }
-  .dots_container {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 40px;
-    margin-top: 16px;
-    position: relative;
-    z-index: 99;
-  }
+.custom-section-move {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px;
+  position: relative;
+  z-index: 99;
+  padding: 0 10px;
+  margin-bottom: 32px;
+}
 
-  .dot {
-    width: 10px;
-    height: 10px;
-    background-color: #ccc; 
-    border-radius: 50%;
-    margin: 0 5px;
-    transition: background-color 0.3s;
-    cursor: pointer;
-  }
-  .dot.active {
-    background-color: #652D86; 
-    width: 19px;
-    border-radius: 25px;
-   
-  }
+/* Estilos para los dots */
+.dots_container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc; 
+  border-radius: 50%;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.dot.active {
+  background-color: #652d86; 
+  width: 19px;
+  border-radius: 25px;
+}
+
+/* Contenedor para agrupar los botones juntos */
+.buttons-container {
+  display: flex;
+  gap: 8px; /* Espacio entre los botones */
+}
+
+/* Estilos para los botones de navegación en estado activo */
+.nav-arrow {
+  font-size: 24px;
+  padding: 7px;
+  cursor: pointer;
+  background-color: #652d86;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilos para el botón "prev" inactivo al inicio */
+.nav-arrow.inactive {
+  background-color: #D8DADA !important;
+  color: #9D9D9D !important;
+  pointer-events: none;
+}
 }
 

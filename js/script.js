@@ -238,13 +238,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const groups = {
   Participacion_familiar: [
-      {
-          number: "1",
-          name: "Martha Ramón",
-          image: "./assets/images/ganadores/yastas-participante-1.png",
-          description: "Su historia es un ejemplo de inclusión financiera, Martha ha logrado impulsar a su comunidad a través de los servicios de <a href='https://www.yastas.com/' target='_blank' class='link-yastas'>Yastás</a>.",
-          videoId: "8VE4moocPTo"
-      }
+    {
+      number: "1",
+      name: "Martha Ramón",
+      image: "./assets/images/ganadores/yastas-participante-1.png",
+      description: "Su historia es un ejemplo de emprendimiento y unión familiar, a través de su negocio Martha inspira a muchas familias a luchar por sus sueños.",
+      videoId: "wR7bEp9A_j0"
+  }
   ]
 };
 
@@ -294,42 +294,44 @@ document.addEventListener('DOMContentLoaded', async function () {
   function updateGroupContent(groupName,groupNumber,groupData, disabled) {
       competitorGroup.innerHTML = '';
 
-      groupData.forEach((competitor,index) => {
-          competitorGroup.innerHTML += `
-              <div class="competitor">
-                  <div class="competitor-img">
-                      <img src="${competitor.image}" alt="${competitor.name}" width="150" height="60" />
-                  </div>
+      groupData.forEach((competitor, index) => {
+        competitorGroup.innerHTML += `
+          <div class="competitor">
+            <div class="competitor-img" onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}')">
+              <img src="${competitor.image}" alt="${competitor.name}" width="150" height="60" />
+            </div>
+          </div>
+          <div class="actions">
+            <div class="history">
+              <p class="competitor-name" onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}')">
+                ${competitor.name}
+              </p>
+              <p class="competitor-group-name">${groupName}</p>
+              <p id="competitor-description" class="description">${competitor.description}</p>
+              <div class="button-container" 
+                onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}')">
+                <button class="watch-video">
+                  <p>Conoce su historia</p>
+                  <div class="play-button"><img src="./assets/images/icon_play.png" alt="bubble" /></div>
+                </button>
               </div>
-                  <div class="actions">
-                      <div class="history">
-                          <p class="competitor-name">${competitor.name}</p>
-                          <p class="competitor-group-name">${groupName}</p>
-                          <p id="competitor-description" class="description">${competitor.description}</p>
-                          <div class="button-container"
-                            onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}')"
-                          >
-                              <button class="watch-video">
-                                <p>Conoce su historia</p><div class="play-button"><img src="./assets/images/icon_play.png" alt="bubble" /></div>
-                              </button>
-                          </div>
-                      </div> 
-                  </div>
-          `;
-
-          const descriptions = document.querySelectorAll('#competitor-description');
-  
-          let maxHeight = 0;
-        
-          descriptions.forEach(description => {
-            if (description.offsetHeight > maxHeight) {
-              maxHeight = description.offsetHeight;
-            }
-          });
-        
-          descriptions.forEach(description => {
-            description.style.height = maxHeight + 'px';
-          });
+            </div> 
+          </div>
+        `;
+      
+        const descriptions = document.querySelectorAll('#competitor-description');
+      
+        let maxHeight = 0;
+      
+        descriptions.forEach(description => {
+          if (description.offsetHeight > maxHeight) {
+            maxHeight = description.offsetHeight;
+          }
+        });
+      
+        descriptions.forEach(description => {
+          description.style.height = maxHeight + 'px';
+        });
       });
   }
 });
@@ -546,8 +548,9 @@ const GALLERY_IMAGES = [
   "./assets/images/gallery-4.png",
   "./assets/images/gallery-5.png",
   "./assets/images/gallery-6.png",
-  "./assets/images/gallery-7.png",
+  "./assets/images/gallery-7.png"
 ];
+
 
 /** @type {HTMLDivElement | null} */
 const $GALLERY_MODAL = document.getElementById("gallery-modal");
