@@ -54,7 +54,7 @@
       </p>
     </div>
     <div class="img-container">
-      <img class="image_mobile" src="./assets/images/mobile/Emprendedores-Compartamos_mod DEKTOP.png"
+      <img class="image_mobile" src="./assets/images/mobile/Emprendedores-Compartamos_mod-DEKTOP.jpg"
         alt="Master premio emprendedores" />
     </div>
   </main>
@@ -421,6 +421,17 @@
         'CDFunnel': 'PE Etapa Final 2024'
       });
     }
+    function registrarEvento() {
+      dataLayer.push({
+        'event': 'galeria_PEC',
+        'cdCategory': 'Galería etapa final PEC',
+        'cdAction': 'compartir_foto',
+        'cdLabel': 'facebook',
+        'cdFunnel': 'PE Etapa Final 2024',
+        'cdValue': '/assets/images/galeria/imagen_final_ganadores.png' // Ruta correcta
+      });
+    }
+  
   </script>
 
   <!-- dots slider-->
