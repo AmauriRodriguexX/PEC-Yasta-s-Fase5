@@ -548,8 +548,12 @@ const GALLERY_IMAGES = [
   "./assets/images/gallery-4.png",
   "./assets/images/gallery-5.png",
   "./assets/images/gallery-6.png",
-  "./assets/images/gallery-7.png"
+  "./assets/images/gallery-7.png",
+  "./assets/images/gallery-8.png",
+  "./assets/images/gallery-9.png",
+  "./assets/images/gallery-10.png",
 ];
+
 
 
 /** @type {HTMLDivElement | null} */

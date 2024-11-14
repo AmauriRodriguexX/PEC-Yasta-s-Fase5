@@ -928,6 +928,8 @@ footer address {
   font-weight: 700;
   cursor: pointer;
   user-select: none;
+  height: 24px;
+  width: 24px;
   padding: 10px;
   border-radius: 50%;
 }
@@ -1007,8 +1009,9 @@ footer address {
   position: absolute;
   background-color: white;
   z-index: 1001;
-  top: calc(100%); /* Position it just below the "Compartir" button */
-  left: 0;
+  top: calc(119%);
+  left: 0%;
+  transform: translateX(-50%);
   overflow: hidden;
 }
 
@@ -1023,7 +1026,7 @@ footer address {
 }
 
 #gallery-view-modal .modal_content .gallery_share .share_wrapper .share_dropdown a:hover {
-  background-color: var(--crimson);
+  background-color: #dfdfdf;
 }
 
 #gallery-modal {
@@ -2169,3 +2172,74 @@ footer address {
 }
 }
 
+/* Estilos generales */
+.share_wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+
+
+.share_container img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+
+/* Dropdown de compartir */
+.share_dropdown {
+  display: none; /* Oculto por defecto */
+  position: absolute;
+  background-color: white !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1;
+  min-width: 179px;
+  top: 120%; /* Ajuste para que quede debajo del botón */
+  right: 0; /* Alineado a la derecha */
+}
+
+.share_dropdown a {
+  color: #333;
+  text-decoration: none;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.share_dropdown a:hover {
+  background-color: #f0f0f0;
+}
+
+#gallery-view-modal .modal_content .gallery_share .share_wrapper .share_dropdown {
+display: table;
+width: 100%;
+text-align: center; /* Centrado horizontal */
+}
+
+#gallery-view-modal .modal_content .gallery_share .share_wrapper .share_dropdown a {
+color: rgb(0, 0, 0);
+font-size: 15px;
+background-color: #ffffff;
+padding: 6px 10px;
+text-decoration: none;
+display: table-cell;
+cursor: pointer;
+font-weight: 500;
+vertical-align: middle; /* Centrado vertical */
+}
+
+.share_dropdown a img {
+  width: 24px !important;
+  height: 24px !important;
+  margin-right: 8px;
+}
+
+
+.space-social  {
+margin-bottom: 8px;
+}
