@@ -2159,6 +2159,8 @@ footer address {
   color: white;
   border-radius: 50%;
   display: flex;
+  height: 24px;
+  width: 24px;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s, color 0.3s;
