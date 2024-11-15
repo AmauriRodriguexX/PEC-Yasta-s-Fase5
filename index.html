@@ -108,7 +108,7 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="handleStoryClick('wR7bEp9A_j0', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo', './assets/images/ganadores/martha_ramon.png', 'https://www.youtube.com/embed/wR7bEp9A_j0')">
+            onclick="handleStoryClick('wR7bEp9A_j0', 'Martha Ramón', 'Descripción de Martha Ramón', '1', 'Venta de abarrotes', './assets/images/ganadores/martha_ramon.png', 'https://www.youtube.com/embed/wR7bEp9A_j0')">
             <span>Conoce su historia</span>
             <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
@@ -138,7 +138,7 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="handleStoryClick('JTP_RoWRr0c', 'María Candila', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo', './assets/images/icon_play.png', 'https://www.youtube.com/embed/JTP_RoWRr0c')">
+            onclick="handleStoryClick('JTP_RoWRr0c', 'María Candila', 'Descripción de María Candila', '2', 'Tortillería y alimentos', './assets/images/icon_play.png', 'https://www.youtube.com/embed/JTP_RoWRr0c')">
             <span>Conoce su historia</span>
             <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
@@ -166,12 +166,10 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="handleStoryClick('NWa83GptpSY', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo', './assets/images/icon_play.png', 'https://www.youtube.com/embed/NWa83GptpSY')">
+            onclick="handleStoryClick('NWa83GptpSY', 'Martha Ramón', 'Descripción de Martha Ramón', '3', 'Minisuper', './assets/images/icon_play.png', 'https://www.youtube.com/embed/NWa83GptpSY')">
             <span>Conoce su historia</span>
             <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
-
-
         </div>
       </div>
     </div>
@@ -283,10 +281,10 @@
     </div>
     <p class="info">Comparte esta página</p>
     <div class="socials">
-      <button onclick="share('facebook')">
+      <button id="share-facebook">
         <img src="./assets/images/fb-icon-gray.png" alt="Facebook" width="11" height="18" />
       </button>
-      <button onclick="share('whatsapp')">
+      <button id="share-whatsapp">
         <img src="./assets/images/whatsapp-icon-gray.png" alt="WhatsApp" width="19" height="18" />
       </button>
     </div>
@@ -294,6 +292,7 @@
       <hr />
     </div>
   </section>
+
 
   <div id="gallery-view-modal">
     <div class="modal_content">
@@ -424,10 +423,10 @@
       console.log("Evento registrado:", window.dataLayer);
     }
 
-
     // Evento para categorías especiales con ID anónimo
     function registrarEventoGanadoresPECCategoriasEspeciales(participantId, category, imageUrl, videoUrl) {
-      dataLayer.push({
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
         event: "ganadores_pec2024_categorias_especiales",
         CDCategory: category,
         CDAction: "conoce_mi_historia",
@@ -459,10 +458,10 @@
       });
     }
 
-
     // Evento para descargar una foto en galería
     function registrarEventoDescargarFoto(imageUrl) {
-      dataLayer.push({
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
         event: 'galeria_PEC',
         CDCategory: 'Galería etapa final PEC',
         CDAction: 'descargar_foto',
@@ -486,9 +485,84 @@
       console.log("Evento registrado en dataLayer:", eventData);
     }
 
+    // Manejo de clic en "Conoce su historia"
+    // Manejo de clic en "Conoce su historia"
+    function handleStoryClick(videoId, name, description, index, groupName, imageUrl, videoUrl) {
+      // Abrir el modal
+      openModal(videoId, name, description, index, groupName);
+
+      // Registrar evento en el dataLayer
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "ganadores_pec2024",
+        CDCategory: "Venta de abarrotes", // Ajustado para mostrar la categoría correcta
+        CDAction: "conoce_mi_historia",
+        CDLabel: `participante_${parseInt(index) + 1}`, // Ajustado para iniciar la numeración en 1
+        CDValue: videoUrl,
+        detail: imageUrl,
+        CDFunnel: "PE Etapa Final 2024"
+      });
+
+      console.log("Evento registrado en dataLayer:", {
+        event: "ganadores_pec2024",
+        CDCategory: "Venta de abarrotes",
+        CDAction: "conoce_mi_historia",
+        CDLabel: `participante_${parseInt(index) + 1}`,
+        CDValue: videoUrl,
+        detail: imageUrl,
+        CDFunnel: "PE Etapa Final 2024"
+      });
+    }
 
   </script>
+  <!--Data layer compartir-->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Captura el botón de Facebook
+      const facebookButton = document.getElementById("share-facebook");
+      if (facebookButton) {
+        facebookButton.addEventListener("click", function () {
+          // Registrar evento en dataLayer
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "click_element",
+            CDCategory: "compartir_pagina",
+            CDLabel: "facebook",
+            CDFunnel: "PE Etapa Final 2024"
+          });
+          console.log("Evento registrado: Facebook");
 
+          // Abrir URL de compartir
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+            "_blank"
+          );
+        });
+      }
+
+      // Captura el botón de WhatsApp
+      const whatsappButton = document.getElementById("share-whatsapp");
+      if (whatsappButton) {
+        whatsappButton.addEventListener("click", function () {
+          // Registrar evento en dataLayer
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "click_element",
+            CDCategory: "compartir_pagina",
+            CDLabel: "whatsapp",
+            CDFunnel: "PE Etapa Final 2024"
+          });
+          console.log("Evento registrado: WhatsApp");
+
+          // Abrir URL de compartir
+          window.open(
+            `https://wa.me/?text=${encodeURIComponent(window.location.href)}`,
+            "_blank"
+          );
+        });
+      }
+    });
+  </script>
   <!-- dots slider-->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -630,6 +704,41 @@
       }
     });
 
+  </script>
+  <script>
+    function share(platform) {
+      // Construcción de URLs de compartir
+      const shareUrls = {
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+        whatsapp: `https://wa.me/?text=${encodeURIComponent(window.location.href)}`
+      };
+
+      // Verifica si dataLayer está disponible
+      if (typeof window.dataLayer !== 'undefined' && Array.isArray(window.dataLayer)) {
+        // Registrar evento en dataLayer
+        window.dataLayer.push({
+          event: 'click_element',
+          CDCategory: 'compartir_pagina',
+          CDLabel: platform,
+          CDFunnel: 'PE Etapa Final 2024'
+        });
+        console.log('Evento registrado en dataLayer:', {
+          event: 'click_element',
+          CDCategory: 'compartir_pagina',
+          CDLabel: platform,
+          CDFunnel: 'PE Etapa Final 2024'
+        });
+      } else {
+        console.error('dataLayer no está definido o no es un array.');
+      }
+
+      // Abrir la URL de compartir
+      if (shareUrls[platform]) {
+        window.open(shareUrls[platform], '_blank');
+      } else {
+        console.error('Plataforma no válida:', platform);
+      }
+    }
   </script>
 
   <!--compartir media-->
