@@ -29,6 +29,11 @@
     })(window, document, "script", "dataLayer", "GTM-PXVLSK6");
   </script>
   <!-- End Google Tag Manager -->
+
+  <!-- Inicialización de dataLayer -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+  </script>
 </head>
 
 <body>
@@ -103,10 +108,12 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="openModal('wR7bEp9A_j0', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo'); onKnowTheStory('Martha Ramón')">
+            onclick="handleStoryClick('wR7bEp9A_j0', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo', './assets/images/ganadores/martha_ramon.png', 'https://www.youtube.com/embed/wR7bEp9A_j0')">
             <span>Conoce su historia</span>
             <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
+
+
 
 
         </div>
@@ -131,10 +138,11 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="openModal('JTP_RoWRr0c', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo'); onKnowTheStory('Martha Ramón')">
+            onclick="handleStoryClick('JTP_RoWRr0c', 'María Candila', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo', './assets/images/icon_play.png', 'https://www.youtube.com/embed/JTP_RoWRr0c')">
             <span>Conoce su historia</span>
             <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
+
 
         </div>
       </div>
@@ -158,10 +166,11 @@
             </div>
           </div>
           <div class="story-container font-verdana"
-            onclick="openModal('NWa83GptpSY', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo'); onKnowTheStory('Martha Ramón')">
+            onclick="handleStoryClick('NWa83GptpSY', 'Martha Ramón', 'Descripción de Martha Ramón', '0', 'GrupoEjemplo', './assets/images/icon_play.png', 'https://www.youtube.com/embed/NWa83GptpSY')">
             <span>Conoce su historia</span>
             <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
+
 
         </div>
       </div>
@@ -304,17 +313,21 @@
         </div>
         <div class="intersection"></div>
         <div class="share_wrapper">
-          <div class="share_container" onclick="toggleDropdown()">
+          <div class="share_container"
+            onclick="registrarEventoCompartirFoto('./assets/images/imagen_final_ganadores.png'); toggleDropdown()">
             <img src="./assets/images/share-icon.png" alt="Icono compartir" />
             <span class="font-inter">Compartir</span>
           </div>
-
           <!-- Dropdown para compartir -->
-          <div id="share-dropdown" class="font-inter share_dropdown">
-            <a href="#" onclick="shareInFacebook()"><img src="./assets/images/fb.png" class="space-social"
-                alt="Facebook" width="11" height="18" />Facebook</a>
-            <a href="#" onclick="shareInWhatsapp()"><img src="./assets/images/ws.png" class="space-social"
-                alt="Facebook" width="11" height="18" />WhatsApp</a>
+          <div id="share-dropdown" class="font-inter share_dropdown" style="display: none;">
+            <a href="#" onclick="shareInFacebook(); return false;">
+              <img src="./assets/images/fb.png" class="space-social" alt="Facebook" width="11" height="18" />
+              Facebook
+            </a>
+            <a href="#" onclick="shareInWhatsapp(); return false;">
+              <img src="./assets/images/ws.png" class="space-social" alt="WhatsApp" width="11" height="18" />
+              WhatsApp
+            </a>
           </div>
         </div>
       </div>
@@ -394,52 +407,86 @@
       </div>
     </div>
   </footer>
-   <!-- Script para registrar eventos -->
-   <script>
-    // Función para registrar ganadores
-    function registrarEventoGanadoresPEC2024(participante, categoria, imagenUrl) {
-      dataLayer.push({
-        event: "ganadores_pec2024",
-        CDCategory: categoria,
+  <!-- Script para registrar eventos -->
+  <script>
+    // Evento para ganadores con ID anónimo
+    function registrarEventoGanadoresPECCategoriasEspeciales(number, groupName, image, videoUrl) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "ganadores_pec2024_categorias_especiales",
+        CDCategory: groupName,
         CDAction: "conoce_mi_historia",
-        CDLabel: participante,
-        CDValue: "https://www.youtube.com/embed/ne-xLWHbxVQ",
-        detail: imagenUrl,
+        CDLabel: `participante_${number}`,
+        CDValue: videoUrl,
+        detail: image,
+        CDFunnel: "PE Etapa Final 2024"
+      });
+      console.log("Evento registrado:", window.dataLayer);
+    }
+
+
+    // Evento para categorías especiales con ID anónimo
+    function registrarEventoGanadoresPECCategoriasEspeciales(participantId, category, imageUrl, videoUrl) {
+      dataLayer.push({
+        event: "ganadores_pec2024_categorias_especiales",
+        CDCategory: category,
+        CDAction: "conoce_mi_historia",
+        CDLabel: `participante_${participantId}`, // Etiqueta anónima
+        CDValue: videoUrl, // URL completa del video
+        detail: imageUrl, // URL completa de la imagen del participante
         CDFunnel: "PE Etapa Final 2024"
       });
     }
 
-    // Función para ver una foto en la galería
-    function registrarEventoVerFoto() {
-      dataLayer.push({
-        event: 'galeria_PEC',
-        CDCategory: 'Galería etapa final PEC',
-        CDAction: 'ver_foto',
-        CDFunnel: 'PE Etapa Final 2024',
-        CDValue: '/assets/images/imagen_final_ganadores.png'
+    // Evento para ver una foto en galería
+    function registrarEventoGanadoresPEC2024(participantId, category, imageUrl, videoUrl) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "ganadores_pec2024",
+        CDCategory: category,
+        CDAction: "conoce_mi_historia",
+        CDLabel: `participante_${participantId}`,
+        CDValue: videoUrl,
+        detail: imageUrl,
+        CDFunnel: "PE Etapa Final 2024"
+      });
+
+      console.log("Evento registrado en dataLayer:", {
+        participantId,
+        category,
+        imageUrl,
+        videoUrl
       });
     }
 
-    // Función para descargar una foto en la galería
-    function registrarEventoDescargarFoto() {
+
+    // Evento para descargar una foto en galería
+    function registrarEventoDescargarFoto(imageUrl) {
       dataLayer.push({
         event: 'galeria_PEC',
         CDCategory: 'Galería etapa final PEC',
         CDAction: 'descargar_foto',
         CDFunnel: 'PE Etapa Final 2024',
-        CDValue: '/assets/images/imagen_final_ganadores.png'
+        CDValue: imageUrl // URL completa de la imagen
       });
     }
 
-    // Función para compartir en redes sociales
-    function registrarEventoClickCompartirPagina(redSocial) {
-      dataLayer.push({
-        event: 'click_element',
-        CDCategory: 'compartir_pagina',
-        CDLabel: redSocial,
+    // Evento para compartir contenido
+    function registrarEventoCompartirFoto(imageUrl) {
+      window.dataLayer = window.dataLayer || [];
+      const eventData = {
+        event: 'compartir_contenido',
+        CDCategory: 'Galería etapa final PEC',
+        CDAction: 'compartir_foto',
+        CDLabel: imageUrl,
+        CDValue: imageUrl,
         CDFunnel: 'PE Etapa Final 2024'
-      });
+      };
+      window.dataLayer.push(eventData);
+      console.log("Evento registrado en dataLayer:", eventData);
     }
+
+
   </script>
 
   <!-- dots slider-->
@@ -587,65 +634,110 @@
 
   <!--compartir media-->
   <script>
-    (function() {
-      let currentImageUrl = ''; // Variable para almacenar la URL completa de la imagen actual
-  
+    (function () {
+      let currentImageUrl = ''; // Variable para almacenar la URL actual o seleccionada
+
       // Función para abrir el modal de la galería y establecer la imagen seleccionada
       function openModalGallery(imageElement) {
         const galleryImage = document.getElementById("gallery-image");
         galleryImage.src = imageElement.src; // Muestra la imagen seleccionada en el modal
-  
+
         // Construir la URL completa de la imagen de forma dinámica
         const imagePath = new URL(imageElement.getAttribute('src'), window.location.origin);
         currentImageUrl = imagePath.href; // URL completa de la imagen seleccionada
-  
+
         document.getElementById("gallery-view-modal").style.display = "block";
       }
-  
+
       // Función para cerrar el modal de la galería
       function closeModalGallery() {
         document.getElementById("gallery-view-modal").style.display = "none";
       }
-  
+
       // Función para mostrar/ocultar el menú de compartir
       function toggleDropdown() {
         const dropdown = document.getElementById("share-dropdown");
         dropdown.style.display = dropdown.style.display === "none" || dropdown.style.display === "" ? "block" : "none";
       }
-  
-      // Función para compartir en Facebook la imagen actual del modal
+
+      // Comparte la URL actual o seleccionada en Facebook
       function shareInFacebook() {
         const url = encodeURIComponent(currentImageUrl || window.location.href);
         const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        registrarEventoCompartirFoto(url); // Registra el evento en dataLayer
         window.open(facebookUrl, '_blank');
       }
-  
-      // Función para compartir en WhatsApp la imagen actual del modal
+
+      // Comparte la URL actual o seleccionada en WhatsApp
       function shareInWhatsapp() {
         const url = encodeURIComponent(currentImageUrl || window.location.href);
         const whatsappUrl = `https://wa.me/?text=${url}`;
+        registrarEventoCompartirFoto(url); // Registra el evento en dataLayer
         window.open(whatsappUrl, '_blank');
       }
-  
+
       // Cierra el menú de compartir si se hace clic fuera de él
       window.addEventListener("click", function (event) {
         const dropdown = document.getElementById("share-dropdown");
         const shareContainer = document.querySelector(".share_container");
-        if (!shareContainer.contains(event.target)) {
+        if (dropdown && shareContainer && !shareContainer.contains(event.target)) {
           dropdown.style.display = "none";
         }
       });
-  
-      // Expone las funciones necesarias en el ámbito global
+
+      // Evento para compartir contenido
+      function registrarEventoCompartirFoto(imageUrl) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'compartir_contenido',
+          CDCategory: 'Galería etapa final PEC',
+          CDAction: 'compartir_foto',
+          CDValue: imageUrl,
+          CDFunnel: 'PE Etapa Final 2024'
+        });
+        console.log("Evento de compartir registrado:", { imageUrl });
+      }
+
+      // Evento para ver una foto en galería
+      function registrarEventoVerFoto(imageUrl) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'galeria_PEC',
+          CDCategory: 'Galería etapa final PEC',
+          CDAction: 'ver_foto',
+          CDFunnel: 'PE Etapa Final 2024',
+          CDValue: imageUrl
+        });
+        console.log("Evento de ver foto registrado:", { imageUrl });
+      }
+
+      // Evento para descargar una foto en galería
+      function registrarEventoDescargarFoto(imageUrl) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'galeria_PEC',
+          CDCategory: 'Galería etapa final PEC',
+          CDAction: 'descargar_foto',
+          CDFunnel: 'PE Etapa Final 2024',
+          CDValue: imageUrl
+        });
+        console.log("Evento de descargar foto registrado:", { imageUrl });
+      }
+
+      // Expone las funciones globalmente
       window.openModalGallery = openModalGallery;
       window.closeModalGallery = closeModalGallery;
       window.toggleDropdown = toggleDropdown;
       window.shareInFacebook = shareInFacebook;
       window.shareInWhatsapp = shareInWhatsapp;
-  
-    })(); // IIFE para encapsular el código
+      window.registrarEventoCompartirFoto = registrarEventoCompartirFoto;
+      window.registrarEventoVerFoto = registrarEventoVerFoto;
+      window.registrarEventoDescargarFoto = registrarEventoDescargarFoto;
+
+    })();
+
   </script>
-  
+
   <!--compartir pagina-->
   <script>
     window.onload = function () {
@@ -664,7 +756,19 @@
       window.share = share;
     };
   </script>
-  
+
+  <script>
+    // En scripts.js o events.js
+    function handleStoryClick(videoId, name, description, index, groupName, imageUrl, videoUrl) {
+      // Abrir el modal
+      openModal(videoId, name, description, index, groupName);
+
+      // Registrar evento en el dataLayer
+      registrarEventoGanadoresPEC2024(index, groupName, imageUrl, videoUrl);
+    }
+
+  </script>
+
   <script src="js/script.js?v=1.0.0"></script>
   <script src="js/home-events.js?v=1.0.0"></script>
 </body>

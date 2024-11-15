@@ -291,49 +291,59 @@ document.addEventListener('DOMContentLoaded', async function () {
     updateGroupContent(buttons[currentIndex].textContent, currentIndex + 1, groups[buttons[currentIndex].getAttribute('data-group')], false);
   });
 
-  function updateGroupContent(groupName,groupNumber,groupData, disabled) {
-      competitorGroup.innerHTML = '';
-
-      groupData.forEach((competitor, index) => {
-        competitorGroup.innerHTML += `
-          <div class="competitor">
-            <div class="competitor-img" onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}')">
-              <img src="${competitor.image}" alt="${competitor.name}" width="150" height="60" />
+  function updateGroupContent(groupName, groupNumber, groupData, disabled) {
+    competitorGroup.innerHTML = '';
+    
+    groupData.forEach((competitor, index) => {
+      // Genera la URL completa del video en formato embed de YouTube
+      const videoUrl = `https://www.youtube.com/embed/${competitor.videoId}`;
+    
+      // Estructura HTML para cada participante
+      competitorGroup.innerHTML += `
+        <div class="competitor">
+          <div class="competitor-img" 
+            onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}');
+                     registrarEventoGanadoresPECCategoriasEspeciales(${competitor.number}, '${groupName}', '${competitor.image}', '${videoUrl}');">
+            <img src="${competitor.image}" alt="${competitor.name}" width="150" height="60" />
+          </div>
+        </div>
+        <div class="actions">
+          <div class="history">
+            <p class="competitor-name" 
+               onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}');
+                        registrarEventoGanadoresPECCategoriasEspeciales(${competitor.number}, '${groupName}', '${competitor.image}', '${videoUrl}');">
+              ${competitor.name}
+            </p>
+            <p class="competitor-group-name">${groupName}</p>
+            <p id="competitor-description" class="description">${competitor.description}</p>
+            <div class="button-container" 
+              onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}');
+                       registrarEventoGanadoresPECCategoriasEspeciales(${competitor.number}, '${groupName}', '${competitor.image}', '${videoUrl}');">
+              <button class="watch-video">
+                <p>Conoce su historia</p>
+                <div class="play-button"><img src="./assets/images/icon_play.png" alt="bubble" /></div>
+              </button>
             </div>
-          </div>
-          <div class="actions">
-            <div class="history">
-              <p class="competitor-name" onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}')">
-                ${competitor.name}
-              </p>
-              <p class="competitor-group-name">${groupName}</p>
-              <p id="competitor-description" class="description">${competitor.description}</p>
-              <div class="button-container" 
-                onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}')">
-                <button class="watch-video">
-                  <p>Conoce su historia</p>
-                  <div class="play-button"><img src="./assets/images/icon_play.png" alt="bubble" /></div>
-                </button>
-              </div>
-            </div> 
-          </div>
-        `;
+          </div> 
+        </div>
+      `;
+  
+      // Ajuste de altura para las descripciones
+      const descriptions = document.querySelectorAll('#competitor-description');
+      let maxHeight = 0;
       
-        const descriptions = document.querySelectorAll('#competitor-description');
-      
-        let maxHeight = 0;
-      
-        descriptions.forEach(description => {
-          if (description.offsetHeight > maxHeight) {
-            maxHeight = description.offsetHeight;
-          }
-        });
-      
-        descriptions.forEach(description => {
-          description.style.height = maxHeight + 'px';
-        });
+      descriptions.forEach(description => {
+        if (description.offsetHeight > maxHeight) {
+          maxHeight = description.offsetHeight;
+        }
       });
+      
+      descriptions.forEach(description => {
+        description.style.height = maxHeight + 'px';
+      });
+    });
   }
+  
 });
 
 
