@@ -113,9 +113,6 @@
             <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
 
-
-
-
         </div>
       </div>
       <div class="competitor_container">
@@ -142,8 +139,6 @@
             <span>Conoce su historia</span>
             <img src="./assets/images/icon_play.png" alt="Botón play">
           </div>
-
-
         </div>
       </div>
       <div class="competitor_container">
@@ -293,7 +288,6 @@
     </div>
   </section>
 
-
   <div id="gallery-view-modal">
     <div class="modal_content">
       <div class="closable_container">
@@ -408,9 +402,8 @@
   </footer>
   <!-- Script para registrar eventos -->
   <script>
-    // Evento para ganadores con ID anónimo
+    window.dataLayer = window.dataLayer || [];
     function registrarEventoGanadoresPECCategoriasEspeciales(number, groupName, image, videoUrl) {
-      window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "ganadores_pec2024_categorias_especiales",
         CDCategory: groupName,
@@ -423,23 +416,7 @@
       console.log("Evento registrado:", window.dataLayer);
     }
 
-    // Evento para categorías especiales con ID anónimo
-    function registrarEventoGanadoresPECCategoriasEspeciales(participantId, category, imageUrl, videoUrl) {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "ganadores_pec2024_categorias_especiales",
-        CDCategory: category,
-        CDAction: "conoce_mi_historia",
-        CDLabel: `participante_${participantId}`, // Etiqueta anónima
-        CDValue: videoUrl, // URL completa del video
-        detail: imageUrl, // URL completa de la imagen del participante
-        CDFunnel: "PE Etapa Final 2024"
-      });
-    }
-
-    // Evento para ver una foto en galería
     function registrarEventoGanadoresPEC2024(participantId, category, imageUrl, videoUrl) {
-      window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "ganadores_pec2024",
         CDCategory: category,
@@ -449,72 +426,39 @@
         detail: imageUrl,
         CDFunnel: "PE Etapa Final 2024"
       });
-
-      console.log("Evento registrado en dataLayer:", {
-        participantId,
-        category,
-        imageUrl,
-        videoUrl
-      });
     }
-
-    // Evento para descargar una foto en galería
-    function registrarEventoDescargarFoto(imageUrl) {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'galeria_PEC',
-        CDCategory: 'Galería etapa final PEC',
-        CDAction: 'descargar_foto',
-        CDFunnel: 'PE Etapa Final 2024',
-        CDValue: imageUrl // URL completa de la imagen
-      });
-    }
-
-    // Evento para compartir contenido
-    function registrarEventoCompartirFoto(imageUrl) {
-      window.dataLayer = window.dataLayer || [];
-      const eventData = {
-        event: 'compartir_contenido',
-        CDCategory: 'Galería etapa final PEC',
-        CDAction: 'compartir_foto',
-        CDLabel: imageUrl,
-        CDValue: imageUrl,
-        CDFunnel: 'PE Etapa Final 2024'
-      };
-      window.dataLayer.push(eventData);
-      console.log("Evento registrado en dataLayer:", eventData);
-    }
-
-    // Manejo de clic en "Conoce su historia"
-    // Manejo de clic en "Conoce su historia"
-    function handleStoryClick(videoId, name, description, index, groupName, imageUrl, videoUrl) {
-      // Abrir el modal
+    function handleStoryClick(event, videoId, name, description, index, groupName, imageUrl, videoUrl) {
+      event.stopImmediatePropagation();
       openModal(videoId, name, description, index, groupName);
-
-      // Registrar evento en el dataLayer
-      window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "ganadores_pec2024",
-        CDCategory: "Venta de abarrotes", // Ajustado para mostrar la categoría correcta
-        CDAction: "conoce_mi_historia",
-        CDLabel: `participante_${parseInt(index) + 1}`, // Ajustado para iniciar la numeración en 1
-        CDValue: videoUrl,
-        detail: imageUrl,
-        CDFunnel: "PE Etapa Final 2024"
-      });
-
-      console.log("Evento registrado en dataLayer:", {
-        event: "ganadores_pec2024",
-        CDCategory: "Venta de abarrotes",
+        CDCategory: groupName,
         CDAction: "conoce_mi_historia",
         CDLabel: `participante_${parseInt(index) + 1}`,
         CDValue: videoUrl,
         detail: imageUrl,
         CDFunnel: "PE Etapa Final 2024"
       });
-    }
 
+      console.log("Evento específico registrado en dataLayer:", window.dataLayer);
+    }
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest('.competitor_container-footer') && !event.target.closest('.story-container')) {
+        const eventData = {
+          event: "click_element",
+          CDCategory: "general_click",
+          CDLabel: event.target.tagName,
+          CDFunnel: "PE Etapa Final 2024"
+        };
+
+        console.log("General click event:", eventData);
+
+        window.dataLayer.push(eventData);
+      }
+    });
   </script>
+
+
   <!--Data layer compartir-->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -563,148 +507,8 @@
       }
     });
   </script>
+  
   <!-- dots slider-->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Seleccionar la sección "ganadores" y el contenedor específico de votos
-      const ganadoresSection = document.querySelector('#ganadores');
-      const votesContainer = ganadoresSection.querySelector('.votes_container');
-      const competitorContainers = votesContainer.querySelectorAll('.competitor_container');
-
-      // Variables para manejar el deslizamiento
-      let startX = 0;
-      let endX = 0;
-
-      if (window.innerWidth <= 768) {
-        // Crear el contenedor de dots y botones específicos para "ganadores"
-        const customSectionMove = document.createElement('div');
-        customSectionMove.className = 'custom-section-move';
-
-        // Crear el contenedor de dots
-        const dotsContainer = document.createElement('div');
-        dotsContainer.className = 'dots_container';
-
-        // Crear un dot por cada tarjeta en el contenedor de "ganadores"
-        competitorContainers.forEach((item, index) => {
-          const dot = document.createElement('span');
-          dot.className = 'dot';
-          if (index === 0) dot.classList.add('active'); // Activar el primer punto
-          dotsContainer.appendChild(dot);
-        });
-
-        // Crear botones de navegación específicos para "ganadores"
-        const prevButton = document.createElement('div');
-        prevButton.id = 'ganadores-prev-button';
-        prevButton.className = 'nav-arrow left-arrow inactive';
-        prevButton.textContent = '←';
-
-        const nextButton = document.createElement('div');
-        nextButton.id = 'ganadores-next-button';
-        nextButton.className = 'nav-arrow right-arrow';
-        nextButton.textContent = '→';
-
-        // Insertar botones dentro del contenedor de botones
-        const buttonsContainer = document.createElement('div');
-        buttonsContainer.className = 'buttons-container';
-        buttonsContainer.appendChild(prevButton);
-        buttonsContainer.appendChild(nextButton);
-
-        // Insertar dots y botones en la sección "ganadores"
-        customSectionMove.appendChild(dotsContainer);
-        customSectionMove.appendChild(buttonsContainer);
-        votesContainer.parentNode.appendChild(customSectionMove);
-
-        // Función para actualizar dots y botones
-        function updateDotsAndButtons() {
-          const scrollPosition = votesContainer.scrollLeft;
-          const itemWidth = votesContainer.offsetWidth;
-          const index = Math.round(scrollPosition / itemWidth);
-          const dots = dotsContainer.querySelectorAll('.dot');
-
-          dots.forEach((dot, idx) => {
-            dot.classList.toggle('active', idx === index);
-          });
-
-          prevButton.classList.toggle('inactive', index === 0);
-          nextButton.classList.toggle('inactive', index === competitorContainers.length - 1);
-
-          prevButton.style.backgroundColor = index > 0 ? '#652d86' : '#D8DADA';
-          prevButton.style.color = index > 0 ? 'white' : '#9D9D9D';
-          nextButton.style.backgroundColor = index < competitorContainers.length - 1 ? '#652d86' : '#D8DADA';
-          nextButton.style.color = index < competitorContainers.length - 1 ? 'white' : '#9D9D9D';
-        }
-
-        // Evento de scroll para actualizar los dots y botones
-        votesContainer.addEventListener('scroll', updateDotsAndButtons);
-
-        // Hacer clic en dots navegable
-        dotsContainer.querySelectorAll('.dot').forEach((dot, idx) => {
-          dot.addEventListener('click', function (event) {
-            event.stopPropagation();
-            votesContainer.scrollTo({
-              left: idx * votesContainer.offsetWidth,
-              behavior: 'smooth'
-            });
-          });
-        });
-
-        // Funcionalidad de navegación para botones
-        prevButton.addEventListener('click', function (event) {
-          event.stopPropagation();
-          const currentIndex = Math.round(votesContainer.scrollLeft / votesContainer.offsetWidth);
-          if (currentIndex > 0) {
-            votesContainer.scrollTo({
-              left: (currentIndex - 1) * votesContainer.offsetWidth,
-              behavior: 'smooth'
-            });
-          }
-        });
-
-        nextButton.addEventListener('click', function (event) {
-          event.stopPropagation();
-          const currentIndex = Math.round(votesContainer.scrollLeft / votesContainer.offsetWidth);
-          if (currentIndex < competitorContainers.length - 1) {
-            votesContainer.scrollTo({
-              left: (currentIndex + 1) * votesContainer.offsetWidth,
-              behavior: 'smooth'
-            });
-          }
-        });
-
-        // Detectar inicio del deslizamiento
-        votesContainer.addEventListener('touchstart', function (e) {
-          startX = e.touches[0].clientX;
-          e.stopPropagation();
-        });
-
-        // Detectar final del deslizamiento
-        votesContainer.addEventListener('touchend', function (e) {
-          endX = e.changedTouches[0].clientX;
-          e.stopPropagation();
-          handleSwipe();
-        });
-
-        // Manejar deslizamiento
-        function handleSwipe() {
-          const threshold = 50;
-          const currentIndex = Math.round(votesContainer.scrollLeft / votesContainer.offsetWidth);
-
-          if (startX - endX > threshold && currentIndex < competitorContainers.length - 1) {
-            votesContainer.scrollTo({
-              left: (currentIndex + 1) * votesContainer.offsetWidth,
-              behavior: 'smooth'
-            });
-          } else if (endX - startX > threshold && currentIndex > 0) {
-            votesContainer.scrollTo({
-              left: (currentIndex - 1) * votesContainer.offsetWidth,
-              behavior: 'smooth'
-            });
-          }
-        }
-      }
-    });
-
-  </script>
   <script>
     function share(platform) {
       // Construcción de URLs de compartir
@@ -712,25 +516,6 @@
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
         whatsapp: `https://wa.me/?text=${encodeURIComponent(window.location.href)}`
       };
-
-      // Verifica si dataLayer está disponible
-      if (typeof window.dataLayer !== 'undefined' && Array.isArray(window.dataLayer)) {
-        // Registrar evento en dataLayer
-        window.dataLayer.push({
-          event: 'click_element',
-          CDCategory: 'compartir_pagina',
-          CDLabel: platform,
-          CDFunnel: 'PE Etapa Final 2024'
-        });
-        console.log('Evento registrado en dataLayer:', {
-          event: 'click_element',
-          CDCategory: 'compartir_pagina',
-          CDLabel: platform,
-          CDFunnel: 'PE Etapa Final 2024'
-        });
-      } else {
-        console.error('dataLayer no está definido o no es un array.');
-      }
 
       // Abrir la URL de compartir
       if (shareUrls[platform]) {
