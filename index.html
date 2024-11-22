@@ -403,45 +403,61 @@
   <!-- Script para registrar eventos -->
   <script>
     window.dataLayer = window.dataLayer || [];
+
     function registrarEventoGanadoresPECCategoriasEspeciales(number, groupName, image, videoUrl) {
+      const fullImageUrl = image ? new URL(image, window.location.origin).href : null;
+      const fullVideoUrl = videoUrl ? new URL(videoUrl, window.location.origin).href : null;
+
       window.dataLayer.push({
         event: "ganadores_pec2024_categorias_especiales",
         CDCategory: groupName,
         CDAction: "conoce_mi_historia",
         CDLabel: `participante_${number}`,
-        CDValue: videoUrl,
-        detail: image,
+        CDValue: fullVideoUrl,
+        detail: fullImageUrl,
         CDFunnel: "PE Etapa Final 2024"
       });
-      console.log("Evento registrado:", window.dataLayer);
+
+      console.log("Evento registrado:", { fullImageUrl, fullVideoUrl });
     }
 
     function registrarEventoGanadoresPEC2024(participantId, category, imageUrl, videoUrl) {
+      const fullImageUrl = imageUrl ? new URL(imageUrl, window.location.origin).href : null;
+      const fullVideoUrl = videoUrl ? new URL(videoUrl, window.location.origin).href : null;
+
       window.dataLayer.push({
         event: "ganadores_pec2024",
         CDCategory: category,
         CDAction: "conoce_mi_historia",
         CDLabel: `participante_${participantId}`,
-        CDValue: videoUrl,
-        detail: imageUrl,
+        CDValue: fullVideoUrl,
+        detail: fullImageUrl,
         CDFunnel: "PE Etapa Final 2024"
       });
+
+      console.log("Evento registrado:", { fullImageUrl, fullVideoUrl });
     }
+
     function handleStoryClick(event, videoId, name, description, index, groupName, imageUrl, videoUrl) {
+      const fullImageUrl = imageUrl ? new URL(imageUrl, window.location.origin).href : null;
+      const fullVideoUrl = videoUrl ? new URL(videoUrl, window.location.origin).href : null;
+
       event.stopImmediatePropagation();
       openModal(videoId, name, description, index, groupName);
+
       window.dataLayer.push({
         event: "ganadores_pec2024",
         CDCategory: groupName,
         CDAction: "conoce_mi_historia",
         CDLabel: `participante_${parseInt(index) + 1}`,
-        CDValue: videoUrl,
-        detail: imageUrl,
+        CDValue: fullVideoUrl,
+        detail: fullImageUrl,
         CDFunnel: "PE Etapa Final 2024"
       });
 
-      console.log("Evento específico registrado en dataLayer:", window.dataLayer);
+      console.log("Evento específico registrado en dataLayer:", { fullImageUrl, fullVideoUrl });
     }
+
     document.addEventListener('click', function (event) {
       if (!event.target.closest('.competitor_container-footer') && !event.target.closest('.story-container')) {
         const eventData = {
@@ -507,7 +523,7 @@
       }
     });
   </script>
-  
+
   <!-- dots slider-->
   <script>
     function share(platform) {
@@ -558,7 +574,7 @@
       function shareInFacebook() {
         const url = encodeURIComponent(currentImageUrl || window.location.href);
         const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-        registrarEventoCompartirFoto(url); // Registra el evento en dataLayer
+        registrarEventoCompartirFoto(currentImageUrl || window.location.href); // Registra el evento en dataLayer
         window.open(facebookUrl, '_blank');
       }
 
@@ -566,7 +582,7 @@
       function shareInWhatsapp() {
         const url = encodeURIComponent(currentImageUrl || window.location.href);
         const whatsappUrl = `https://wa.me/?text=${url}`;
-        registrarEventoCompartirFoto(url); // Registra el evento en dataLayer
+        registrarEventoCompartirFoto(currentImageUrl || window.location.href); // Registra el evento en dataLayer
         window.open(whatsappUrl, '_blank');
       }
 
@@ -581,42 +597,58 @@
 
       // Evento para compartir contenido
       function registrarEventoCompartirFoto(imageUrl) {
+        const fullImageUrl = new URL(imageUrl, window.location.origin).href;
+
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: 'galeria_PEC',
           CDCategory: 'Galería etapa final PEC',
           CDAction: 'compartir_foto',
-          CDValue: imageUrl,
+          CDValue: fullImageUrl,
           CDFunnel: 'PE Etapa Final 2024'
         });
-        console.log("Evento de compartir registrado:", { imageUrl });
+        console.log("Evento de compartir registrado:", { fullImageUrl });
       }
 
       // Evento para ver una foto en galería
       function registrarEventoVerFoto(imageUrl) {
+        const fullImageUrl = new URL(imageUrl, window.location.origin).href;
+
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: 'galeria_PEC',
           CDCategory: 'Galería etapa final PEC',
           CDAction: 'ver_foto',
           CDFunnel: 'PE Etapa Final 2024',
-          CDValue: imageUrl
+          CDValue: fullImageUrl
         });
-        console.log("Evento de ver foto registrado:", { imageUrl });
+        console.log("Evento de ver foto registrado:", { fullImageUrl });
       }
 
-      // Evento para descargar una foto en galería
       function registrarEventoDescargarFoto(imageUrl) {
-        window.dataLayer = window.dataLayer || [];
+        console.log("URL recibida (antes de procesar):", imageUrl);
+
+        const fullImageUrl = imageUrl.startsWith('http') || imageUrl.startsWith('//')
+          ? imageUrl
+          : new URL(imageUrl, window.location.origin).href;
+
+        console.log("URL procesada (completa):", fullImageUrl);
+
+        // Reiniciar dataLayer para evitar datos obsoletos
+        window.dataLayer = [];
+
         window.dataLayer.push({
           event: 'galeria_PEC',
           CDCategory: 'Galería etapa final PEC',
           CDAction: 'descargar_foto',
           CDFunnel: 'PE Etapa Final 2024',
-          CDValue: imageUrl
+          CDValue: fullImageUrl
         });
-        console.log("Evento de descargar foto registrado:", { imageUrl });
+
+        console.log("Evento de descargar foto registrado en dataLayer:", { fullImageUrl });
       }
+
+
 
       // Expone las funciones globalmente
       window.openModalGallery = openModalGallery;
@@ -627,10 +659,9 @@
       window.registrarEventoCompartirFoto = registrarEventoCompartirFoto;
       window.registrarEventoVerFoto = registrarEventoVerFoto;
       window.registrarEventoDescargarFoto = registrarEventoDescargarFoto;
-
     })();
-
   </script>
+
 
   <!--compartir pagina-->
   <script>
@@ -653,12 +684,12 @@
 
   <script>
     // En scripts.js o events.js
-    function handleStoryClick(videoId, name, description, index, groupName, imageUrl, videoUrl) {
+    function handleStoryClick(videoId, name, description, index, groupName, fullImageUrl, videoUrl) {
       // Abrir el modal
       openModal(videoId, name, description, index, groupName);
 
       // Registrar evento en el dataLayer
-      registrarEventoGanadoresPEC2024(index, groupName, imageUrl, videoUrl);
+      registrarEventoGanadoresPEC2024(index, groupName, fullImageUrl, videoUrl);
     }
 
   </script>
