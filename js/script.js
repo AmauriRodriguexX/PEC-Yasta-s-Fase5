@@ -242,14 +242,12 @@ const groups = {
       number: "1",
       name: "Martha Ramón",
       image: "./assets/images/ganadores/yastas-participante-1.png",
+      alt: "Martha Ramón la comisionista ganadora del Premio Emprendedores 2024 Yastás.",
       description: "Su historia es un ejemplo de emprendimiento y unión familiar, a través de su negocio Martha inspira a muchas familias a luchar por sus sueños.",
-      videoId: "wR7bEp9A_j0"
+      videoId: "XKjme8G8XmE"
   }
   ]
 };
-
-
-
 
 var currentGroupData = [];
 document.addEventListener('DOMContentLoaded', async function () {
@@ -304,7 +302,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           <div class="competitor-img" 
             onclick="openModal('${competitor.videoId}', '${competitor.name}', '${competitor.description}', '${index}', '${groupName}');
                      registrarEventoGanadoresPECCategoriasEspeciales(${competitor.number}, '${groupName}', '${competitor.image}', '${videoUrl}');">
-            <img src="${competitor.image}" alt="${competitor.name}" width="150" height="60" />
+            <img src="${competitor.image}" alt="${competitor.alt}" width="150" height="60" />
           </div>
         </div>
         <div class="actions">

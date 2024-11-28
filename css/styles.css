@@ -2245,3 +2245,10 @@ vertical-align: middle; /* Centrado vertical */
 .space-social  {
 margin-bottom: 8px;
 }
+
+.img-responsive-person  {
+  width: 100%;      
+  height: auto;
+  object-fit: cover; 
+  display: block; 
+}
