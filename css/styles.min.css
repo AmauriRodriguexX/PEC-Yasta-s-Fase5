@@ -350,7 +350,7 @@ main div {
 }
 @media (max-width: 768px) { /* Ajusta el ancho según lo que definas como mobile */
      span {
-         font-size: 14px;
+         font-size: 12px;
      }
    }
 #winners .group .competitor-group .actions .history .competitor-name {
